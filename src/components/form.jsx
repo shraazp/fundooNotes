@@ -3,6 +3,7 @@ import "../css/form.css";
 import accounts from "../assets/note.png"
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { Link } from '@mui/material';
 import {useForm} from './useForm';
 const initialFValues = {
     firstname: "",
@@ -58,6 +59,8 @@ export default function RegForm() {
                     </div>
                     <div className="createAccountDiv">
                         <span className="createAccount">Welcome to fundoo notes</span>
+                        <br/><br/>
+                        <span className='createAccount'>Create your Fundoos account</span>
                     </div>
                     <form onSubmit={handleSubmit}>
                         <div className="innerImg">
@@ -141,7 +144,7 @@ export default function RegForm() {
 
                                 <div className="signInSignUp">
                                     <div className="signIn">
-                                        <span>Sign in instead</span>
+                                    <Link href="/login">sign in instead</Link>
                                     </div>
                                     <div className="signUp">
                                         <Button variant="contained">Sign Up</Button>
