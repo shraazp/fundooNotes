@@ -2,17 +2,12 @@
   .imgBox{
       height: auto;
       min-height: 500px;
-      /* overflow-y: auto; */
-      /* box-flex: 1; */
       position: relative;
-      /* width: 100%; */
       width: 800px;
-      /* top: 30%; */
       right: 50%;
       left: 50%;
-      /* height: 570px; */
-      margin-top: 4em; /*set to a negative number 1/2 of your height*/
-      margin-left: -400px; /*set to a negative number 1/2 of your width */
+      margin-top: 4em; 
+      margin-left: -400px; 
       margin-right: -400px;
       margin-bottom: 5em;
       border-radius: 8px;
@@ -32,18 +27,14 @@
   
   @media only screen and (max-width: 900px) {
       .imgBox{
-          /* box-flex: 1; */
           position: relative;
           width: 498px;
           height: auto;
           min-height: 500px;
-          /* top: 30%; */
           right: 50%;
           left: 50%;
-          /* height: 570px; */
-          margin-top: 4em; /*set to a negative number 1/2 of your height*/
-          margin-left: -246px; /*set to a negative number 1/2 of your width  */
-          /* margin-right: 25em;*/
+          margin-top: 4em; 
+          margin-left: -246px;
           margin-bottom: 5em;
           border-radius: 8px;
           border: 1px solid #dadce0;
@@ -60,17 +51,7 @@
   .outerBox {
     box-flex: 1;
     padding: 48px 40px 36px;
-    /* width: 450px;
-    top: 30%;
-    left: 50%;
-    height: 570px;
-    margin-top: 4em; 
-    margin-left: 25em; 
-    margin-right: 25em;
-    margin-bottom: 5em;
-    border-radius: 8px;
-    border: 1px solid #dadce0; */
-    /* background-color: #f3f3f3; */
+
   }
   
   .fundooNotesRainbow {
@@ -187,9 +168,24 @@
     margin-right: auto;
     padding: 6px 0;
   }
+  .create {
+    font-weight: bold;
+    font-family: "Google Sans", Roboto, Arial, sans-serif;
+    font-size: 14px;
+    color: #1a73e8;
+    margin-top: 48px;
+    margin-left: 0;
+    margin-right: auto;
+    padding: 6px 0;
+  }
   
-  .signUp {
-    /* width: 214.5px; */
+  .Login {
+    margin-top: 48px;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .signUp{
     margin-top: 48px;
     margin-left: auto;
     margin-right: 0;
