@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Link } from '@mui/material';
 import {useForm} from './useForm';
+import userConnect from '../service/userRegister';
 const initialFValues = {
     firstname: "",
     lastname: "",
@@ -13,6 +14,8 @@ const initialFValues = {
     confirm: ""
 }
 export default function RegForm() {
+    
+      
     const validate = (fieldValues = values) => {
         let temp = {
             ...errors
@@ -26,9 +29,10 @@ export default function RegForm() {
         if ('password' in fieldValues) 
             temp.password = (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/).test(fieldValues.password) ? "" : "Minimum 8 characterss required."
         if ('confirm' in fieldValues) {
-            temp.confirm = fieldValues.confirm.length > 7 ? "" : "Minimum 8 characterss required"
+            temp.confirm = fieldValues.confirm===values.password ? "" : "Should match with the password given"
         }
         setErrors({
+            // eslint-disable-next-line
             ... temp
         })
         if (fieldValues === values) 
@@ -40,16 +44,17 @@ export default function RegForm() {
         errors,
         setErrors,
         handleInputChange,
-        resetForm
     } = useForm(initialFValues, true, validate);
-
+const data={firstName:values.firstname,lastName:values.lastname,password:values.password,email:values.email}
+    
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            console.log("good to go")
-            resetForm()
+           userConnect('users',data)
         }
     }
+   
+    
     return (
         <div className="imgBox">
             <div className="outerBox">
@@ -60,9 +65,10 @@ export default function RegForm() {
                     <div className="createAccountDiv">
                         <span className="createAccount">Welcome to fundoo notes</span>
                         <br/><br/>
-                        <span className='createAccount'>Create your Fundoos account</span>
+                        <span className='createAccount'>Create your Fundoos account
+                        </span>
                     </div>
-                    <form onSubmit={handleSubmit}>
+                    <form >
                         <div className="innerImg">
                             <div className="inputBox">
                                 <div className="firstAndLast">
@@ -110,6 +116,7 @@ export default function RegForm() {
                                 <div className="password">
                                     <div className="firstPassword">
                                         <TextField type="password" required className="firstPasswordBox" label="Password" variant="outlined" size="small" name="password"
+                                            
                                             value={
                                                 values.password
                                             }
@@ -147,7 +154,7 @@ export default function RegForm() {
                                     <Link href="/login">sign in instead</Link>
                                     </div>
                                     <div className="signUp">
-                                        <Button variant="contained">Sign Up</Button>
+                                        <Button variant="contained" onClick={handleSubmit}>Sign Up</Button>
                                     </div>
                                 </div>
                             </div>

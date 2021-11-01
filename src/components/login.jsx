@@ -1,14 +1,14 @@
 import React from 'react'
-import "../css/form.css";
+import "../css/login.css";
 import accounts from "../assets/note.png"
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useForm } from './useForm';
 import { Link } from '@mui/material';
+import userConnect from '../service/userRegister';
 const initialFValues = {
    email:"",
-   password:""
-   
+   password:""   
 }
 
 
@@ -35,14 +35,12 @@ export default function  Login()  {
         errors,
         setErrors,
         handleInputChange,
-        resetForm
     } = useForm(initialFValues, true, validate);
-    
+    const data={email:values.email,password:values.password}
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()){
-            console.log("good to go")
-            resetForm()
+            userConnect('users/login',data)
         }
     }
         return (
@@ -58,7 +56,7 @@ export default function  Login()  {
                                 <span className="createAccount">Sign in to continue</span>
                             </div>
                             <form onSubmit={handleSubmit}>
-                                <div className="innerImg">
+                               
                                     <div className="inputBox">
                                        
                                         <div className="emailId">
@@ -87,19 +85,11 @@ export default function  Login()  {
                                                 <Link href="/register">Are you new to Fundoos notes</Link>
                                             </div>
                                             <div className="Login">
-                                                <Button variant="contained">Login</Button>
+                                                <Button variant="contained"onClick={handleSubmit}>Login</Button>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="img">
-                                        <img src={accounts}
-                                        alt="note icon"
-                                            width={260}
-                                            height={244}
-                                            style={
-                                                {verticalAlign: 'middle'}
-                                            }/>
-                                    </div>
+                                    
+                                    
                                 </div>
                             </form>
                         </div>
