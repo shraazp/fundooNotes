@@ -3,19 +3,26 @@ import "../css/form.css";
 import accounts from "../assets/note.png"
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import FormControl from '@mui/material/FormControl';
 import { Link } from '@mui/material';
 import {useForm} from './useForm';
 import userConnect from '../service/userRegister';
+import IconButton from '@mui/material/IconButton';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import FormHelperText from '@mui/material/FormHelperText';
 const initialFValues = {
     firstname: "",
     lastname: "",
     email: "",
     password: "",
-    confirm: ""
+    confirm: "",
+    showPassword: false,
 }
 export default function RegForm() {
-    
-      
     const validate = (fieldValues = values) => {
         let temp = {
             ...errors
@@ -32,29 +39,42 @@ export default function RegForm() {
             temp.confirm = fieldValues.confirm===values.password ? "" : "Should match with the password given"
         }
         setErrors({
-            // eslint-disable-next-line
+             // eslint-disable-next-line
             ... temp
         })
         if (fieldValues === values) 
             return Object.values(temp).every(x => x === "")
     }
-
     const {
         values,
         errors,
+        setValues,
         setErrors,
-        handleInputChange,
-    } = useForm(initialFValues, true, validate);
-const data={firstName:values.firstname,lastName:values.lastname,password:values.password,email:values.email}
+        handleInputChange
+    } = useForm(initialFValues,true,validate);
+    const data={firstName:values.firstname,lastName:values.lastname,password:values.password,email:values.email}
     
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
            userConnect('users',data)
+           alert("successfully registered!!!")
         }
     }
-   
+    const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+      };
+      const handleClickShowPassword = () => {
+        setValues({
+          ...values,
+          showPassword: !values.showPassword,
+        });
+      };
     
+      const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+      };
+   
     return (
         <div className="imgBox">
             <div className="outerBox">
@@ -73,13 +93,10 @@ const data={firstName:values.firstname,lastName:values.lastname,password:values.
                             <div className="inputBox">
                                 <div className="firstAndLast">
                                     <div className="firstName">
-                                        <TextField required className="firstNameBox" label="First name" variant="outlined" size="small" name="firstname"
-                                            value={
-                                                values.firstname
-                                            }
+                                        <TextField required className="firstNameBox" label="First name" variant="outlined" size="small" name="firstname" 
                                             onChange={handleInputChange}
                                             error={
-                                                errors.firstname
+                                                !!errors.firstname
                                             }
                                             helperText={
                                                 errors.firstname
@@ -87,12 +104,9 @@ const data={firstName:values.firstname,lastName:values.lastname,password:values.
                                     </div>
                                     <div className="lastName">
                                         <TextField required className="lastNameBox" label="Last name" variant="outlined" size="small" name="lastname"
-                                            value={
-                                                values.lastname
-                                            }
                                             onChange={handleInputChange}
                                             error={
-                                                errors.lastname
+                                                !!errors.lastname
                                             }
                                             helperText={
                                                 errors.lastname
@@ -102,12 +116,9 @@ const data={firstName:values.firstname,lastName:values.lastname,password:values.
                                 </div>
                                 <div className="emailId">
                                     <TextField required className="emailIdBox" fullWidth label="Email Id" size="small" autoComplete="email" placeholder="abc.123@example.com" name="email"
-                                        value={
-                                            values.email
-                                        }
                                         onChange={handleInputChange}
                                         error={
-                                            errors.email
+                                            !!errors.email
                                         }
                                         helperText={
                                             errors.email
@@ -115,31 +126,70 @@ const data={firstName:values.firstname,lastName:values.lastname,password:values.
                                 </div>
                                 <div className="password">
                                     <div className="firstPassword">
-                                        <TextField type="password" required className="firstPasswordBox" label="Password" variant="outlined" size="small" name="password"
-                                            
-                                            value={
-                                                values.password
-                                            }
-                                            onChange={handleInputChange}
-                                            error={
-                                                errors.password
-                                            }
-                                            helperText={
-                                                errors.password
-                                            }/>
+                                    <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                            <OutlinedInput
+                                                    required 
+                                                    className="firstPasswordBox" 
+                                                    size="small"
+                                                    type={values.showPassword ? 'text' : 'password'}
+                                                    value={values.password}
+                                                    name="password"
+                                                    onChange={handleChange('password')&&handleInputChange}
+                                                    error={
+                                                        !!errors.password
+                                                    }
+                                                    
+                                                    endAdornment={
+                                                    <InputAdornment position="end">
+                                                    <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                    edge="end"
+                                            >               
+                                            {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                            </InputAdornment>
+                                                    }
+                                                    label="Password"
+    
+                                       />
+                                       <FormHelperText >{errors.password}</FormHelperText>
+                                        </FormControl>
                                     </div>
                                     <div className="confirm">
-                                        <TextField type="password" required className="confirmBox" label="Confirm" variant="outlined" size="small" name="confirm"
-                                            value={
-                                                values.confirm
-                                            }
-                                            onChange={handleInputChange}
-                                            error={
-                                                errors.confirm
-                                            }
-                                            helperText={
-                                                errors.confirm
-                                            }/>
+                                    <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                                    <InputLabel htmlFor="outlined-adornment-password">Confirm</InputLabel>
+                                            <OutlinedInput
+                                                    required 
+                                                    className="firstPasswordBox" 
+                                                    size="small"
+                                                    type={values.showPassword ? 'text' : 'password'}
+                                                    value={values.confirm}
+                                                    name="confirm"
+                                                    onChange={handleChange('password')&&handleInputChange}
+                                                    error={
+                                                        !!errors.confirm
+                                                    }
+                                                   
+                                                    endAdornment={
+                                                    <InputAdornment position="end">
+                                                    <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                    edge="end"
+                                            >               
+                                            {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                            </InputAdornment>
+                                                    }
+                                                    label="Confirm"
+                                                   
+                                       />
+                                        <FormHelperText >{errors.confirm}</FormHelperText>
+                                        </FormControl>
                                     </div>
                                 </div>
                                 <div className="passwordInfo">

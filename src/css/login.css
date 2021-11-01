@@ -1,4 +1,4 @@
-@media only screen and (min-width: 900px) {
+@media only screen and(min-width: 900px) {
     .imgBox{
         height: auto;
         min-height: 500px;
@@ -15,193 +15,122 @@
         transition: delay 0.5s;
         transition: width 1s;
     }
-    .img{
-        margin-left: 5%;
-        margin-right: 5%;
-    }
     .innerImg{
         display: inline-block;
         display: flex;
     }
+}
+
+@media only screen and(max-width: 900px) {
+    .imgBox{
+        position: relative;
+        width: 498px;
+        height: auto;
+        min-height: 500px;
+        right: 50%;
+        left: 50%;
+        margin-top: 4em; 
+        margin-left: -246px;
+        margin-bottom: 5em;
+        border-radius: 8px;
+        border: 1px solid #dadce0;
+        transition: width 0.5s;
     }
-    
-    @media only screen and (max-width: 900px) {
-        .imgBox{
-            position: relative;
-            width: 500px;
-            height: 448px;
-            min-height: 500px;
-            right: 50%;
-            left: 50%;
-            margin-top: 4em; 
-            margin-left: -246px;
-            margin-bottom: 5em;
-            border-radius: 8px;
-            border: 1px solid #dadce0;
-            transition: width 0.5s;
-        }
-        .img{
-            margin-left: 5%;
-            margin-right: 5%;
-            display: none;
-            transition: delay 2s;
-            transition: width 1s;
-        }
-        }
-    .outerBox {
-      box-flex: 1;
-      padding: 48px 40px 36px;
-  
-    }
-    
-    .fundooNotesRainbow {
-      background-image: linear-gradient(
-        to left,
-        green,
-        rgb(9, 136, 209),
-        yellow,
-        red,
-        rgb(20, 137, 214)
-      );
-      font-weight: bold;
-      
-      font-size: 20px;
-      font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-      -webkit-background-clip: text;
-      -moz-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      display:flex;
-  justify-content:center;
-    }
-    
-    .createAccountDiv {
-      padding-top: 16px;
-      text-align: center;
-    }
-    .form{
-       
-            margin-left: 25%;
-            margin-right:25%;
-            width: 50%;
-        
-    }
-    .createAccount {
-      color: #494a4d;
-      padding-bottom: 0;
-      font-family: "Google Sans", "Noto Sans Myanmar UI", arial, sans-serif;
-      font-size: 24px;
-      font-weight: 400;
-      line-height: 1.3333;
-      margin-bottom: 0;
-      margin-top: 0;
-    }
-    
-    .inputBox {
-      padding: 24px 0 0;
-      
-        margin-left: 25%;
-        margin-right:25%;
-        width: 50%;
-    
-    }
-    
-    .firstAndLast {
-      display: inline-block;
-      display: flex;
-    }
-    
-    .firstName {
-      width: 214.5px;
-      margin-right: 10px;
-    }
-    
-    .lastName {
-      width: 214.5px;
-      margin-left: 10px;
-    }
-    
-    .emailId {
-      padding-top: 24px;
-      display:flex;
-      justify-content:center;
-    }
-    
-    .password {
-      display: inline-block;
-      display: flex;
-      justify-content:center;
-    }
-    
-    .firstPassword {
-      width: 214.5px;
-      margin-top: 24px;
-      margin-left: 0;
-      margin-right: 10px;
-    }
-    
-    .confirm {
-      margin-top: 24px;
-      width: 214.5px;
-      margin-left: 10px;
-      margin-right: 0;
-    }
-    
-    .passwordInfo {
-      color: rgba(0, 0, 0, 0.6);
-      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-      font-weight: 400;
-      font-size: 0.75rem;
-      line-height: 1.66;
-      letter-spacing: 0.03333em;
-      text-align: left;
-      margin-top: 4px;
-      margin-right: 14px;
-      margin-bottom: 0;
-      margin-left: 14px;
-    }
-    
-    .showPasswordMsg {
-      font-size: 14px;
-    }
-    
-    .signInSignUp {
-      display: inline-block;
-      display: flex;
-    }
-    
-    .signIn {
-      font-weight: bold;
-      font-family: "Google Sans", Roboto, Arial, sans-serif;
-      font-size: 14px;
-      color: #1a73e8;
-      margin-top: 48px;
-      margin-left: 0;
-      margin-right: auto;
-      padding: 6px 0;
-    }
-    .create {
-      font-weight: bold;
-      font-family: "Google Sans", Roboto, Arial, sans-serif;
-      font-size: 14px;
-      color: #1a73e8;
-      margin-top: 48px;
-      margin-left: 0;
-      margin-right: auto;
-      padding: 6px 0;
-    }
-    
-    .Login {
-      margin-top: 48px;
-      margin-left: auto;
-      margin-right: 0;
-     
-    }
-  
-    .signUp{
-      margin-top: 48px;
-      margin-left: auto;
-      margin-right: 0;
-     
-    }
+
+}
+.outerLogin {
+
+    padding: 48px 40px 36px;
+
+}
+
+.fundooNotesLogo {
+    background-image: linear-gradient(to left, green, rgb(9, 136, 209), yellow, red, rgb(20, 137, 214));
+    font-weight: bold;
+
+    font-size: 20px;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: flex;
+    justify-content: center;
+}
+
+.LoginAccount {
+    padding-top: 16px;
+    text-align: center;
+}
+.LoginMessage {
+    color: #494a4d;
+    padding-bottom: 0;
+    font-family: "Google Sans", "Noto Sans Myanmar UI", arial, sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.3333;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.loginForm {
+    padding: 24px 0 0;
+
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+
+}
+
+
+.emailId {
+    padding-top: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.password {
+    display: inline-block;
+    display: flex;
+    justify-content: center;
+}
+
+
+.signInSignUp {
+    display: inline-block;
+    display: flex;
+}
+
+.forgot {
+    direction: ltr;
+    white-space: normal;
+    font-family: roboto, 'Noto Sans Myanmar UI', arial, sans-serif;
+    box-sizing: inherit;
+    border-radius: 4px;
+    color: #1a73e8;
+    display: inline-block;
+    font-weight: 500;
+    letter-spacing: 0.25px;
+    outline: 0;
+    position: relative;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: inherit;
+    padding: 0;
+    text-align: left !important;
+    border: 0;
+}
+
+.Login {
+    margin-top: 48px;
+    margin-left: auto;
+    margin-right: 0;
+
+}
+
+.signUp {
+    margin-top: 48px;
+    margin-left: auto;
+    margin-right: 0;
+
+}
