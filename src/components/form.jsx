@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import FormControl from '@mui/material/FormControl';
 import { Link } from '@mui/material';
 import {useForm} from './useForm';
-import userConnect from '../service/userRegister';
+import userPost from '../service/userRegister';
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -23,6 +23,7 @@ const initialFValues = {
     showPassword: false,
 }
 export default function RegForm() {
+   
     const validate = (fieldValues = values) => {
         let temp = {
             ...errors
@@ -38,10 +39,12 @@ export default function RegForm() {
         if ('confirm' in fieldValues) {
             temp.confirm = fieldValues.confirm===values.password ? "" : "Should match with the password given"
         }
+      
         setErrors({
              // eslint-disable-next-line
-            ... temp
+            ...temp
         })
+       
         if (fieldValues === values) 
             return Object.values(temp).every(x => x === "")
     }
@@ -57,8 +60,8 @@ export default function RegForm() {
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-           userConnect('users',data)
-           alert("successfully registered!!!")
+           userPost('users',data)
+           
         }
     }
     const handleChange = (prop) => (event) => {
@@ -88,7 +91,7 @@ export default function RegForm() {
                         <span className='createAccount'>Create your Fundoos account
                         </span>
                     </div>
-                    <form >
+                    <form>
                         <div className="innerImg">
                             <div className="inputBox">
                                 <div className="firstAndLast">
@@ -100,7 +103,8 @@ export default function RegForm() {
                                             }
                                             helperText={
                                                 errors.firstname
-                                            }/>
+                                            }
+                                            />
                                     </div>
                                     <div className="lastName">
                                         <TextField required className="lastNameBox" label="Last name" variant="outlined" size="small" name="lastname"
@@ -122,7 +126,8 @@ export default function RegForm() {
                                         }
                                         helperText={
                                             errors.email
-                                        }/>
+                                        }
+                                        />
                                 </div>
                                 <div className="password">
                                     <div className="firstPassword">
