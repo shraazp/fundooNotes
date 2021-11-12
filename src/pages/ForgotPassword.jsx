@@ -3,8 +3,10 @@ import "../css/login.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import {Grid, Paper} from '@material-ui/core';
-import {useForm} from './useForm';
+import {useForm} from '../components/useForm';
 import userPost from '../service/userRegister';
+
+import {Link} from '@mui/material';
 const initialFValues = {
     email: ""
 }
@@ -44,7 +46,9 @@ export default function ForgotPassword() {
         margin: '8px 0'
     }
     return (
+        
         <Grid>
+            
             <Paper elevation={10}
                 style={paperStyle}>
                 <Grid align='center'>
@@ -66,7 +70,10 @@ export default function ForgotPassword() {
                         }/>
 
                     <div className="createAndLogin">
+                    <div className="createUser">
                         <br/>
+                            <Link href="/login">Back</Link>
+                        </div>
                         <Button variant="contained"
                             style={btnstyle}
                             onClick={handleSubmit}>Next</Button>

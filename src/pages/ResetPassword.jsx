@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from "@mui/material/Button";
-import {useForm} from './useForm';
+import {useForm} from '../components/useForm';
 import userPost from '../service/userRegister';
 import {Grid, Paper} from '@material-ui/core';
 import IconButton from '@mui/material/IconButton';
@@ -79,8 +79,9 @@ return(
             <span className="fundooNotesLogo">FundooNotes</span>
             <h3>Please enter new password</h3>    
         </Grid>
+        <br/>
         <form onSubmit={handleSubmit}>
-        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+        <FormControl >
             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
             <OutlinedInput
                 required  
@@ -102,7 +103,8 @@ return(
                             label="Password" />
             <FormHelperText >{errors.password}</FormHelperText>
             </FormControl>
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+            <br/><br/>
+            <FormControl >
                 <InputLabel htmlFor="outlined-adornment-password">Confirm</InputLabel>
                 <OutlinedInput
                     required 
@@ -129,7 +131,7 @@ return(
             <br/><br/>
             <Button variant="contained"
                     style={btnstyle}
-                    onClick={handleSubmit}>Login</Button>
+                    onClick={handleSubmit}>Reset</Button>
           
         </form>
     </Paper>

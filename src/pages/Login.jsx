@@ -2,15 +2,18 @@ import React from 'react'
 import "../css/login.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import {useForm} from './useForm';
+import {useForm} from '../components/useForm';
 import {Link} from '@mui/material';
 import userPost from '../service/userRegister';
 import {Grid, Paper} from '@material-ui/core';
+import { useHistory } from 'react-router-dom'
+
 const initialFValues = {
     email: "",
     password: ""
 }
 export default function Login() {
+    let history = useHistory();
     const validate = (fieldValues = values) => {
         let temp = {
             // eslint-disable-next-line
@@ -39,6 +42,7 @@ export default function Login() {
         e.preventDefault()
         if (validate()) {
             userPost('users/login', data)
+            history.push('/dashboard');
         }
     }
     const paperStyle = {

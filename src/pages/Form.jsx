@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControl from '@mui/material/FormControl';
 import { Link } from '@mui/material';
-import {useForm} from './useForm';
+import {useForm} from '../components/useForm';
 import userPost from '../service/userRegister';
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -131,7 +131,7 @@ export default function RegForm() {
                                 </div>
                                 <div className="password">
                                     <div className="firstPassword">
-                                    <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                                    <FormControl>
                                     <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                             <OutlinedInput
                                                     required 
@@ -164,7 +164,7 @@ export default function RegForm() {
                                         </FormControl>
                                     </div>
                                     <div className="confirm">
-                                    <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                                    <FormControl >
                                     <InputLabel htmlFor="outlined-adornment-password">Confirm</InputLabel>
                                             <OutlinedInput
                                                     required 
