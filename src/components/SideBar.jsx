@@ -1,40 +1,25 @@
 import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
   overflowX: 'hidden',
 });
 
-const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
+const closedMixin = (theme) => ({ 
   overflowX: 'hidden',
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
@@ -47,10 +32,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
-
 
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -70,46 +53,69 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function SideBar(open) {
-  const theme = useTheme();
-  
+export default function SideBar(props) {
  
+  const handleDrawerOpen = () => {
+    props.setOpen(true);
+  };
 
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-     
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton >
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
+  // const handleDrawerClose = () => {
+  //   props.setOpen(false);
+  // };
+  const menuItems = [
+    { 
+      text: 'Notes', 
+      icon: <LightbulbOutlinedIcon/>, 
+      path: '/' 
+    },
+    { 
+      text: 'Remainders', 
+      icon: < NotificationsNoneOutlinedIcon />, 
+      path: '/create' 
+    },
+    { 
+      text: 'Edit labels', 
+      icon: <CreateOutlinedIcon />, 
+      path: '/create' 
+    },
+    { 
+      text: 'Archieve', 
+      icon: < ArchiveOutlinedIcon/>, 
+      path: '/login' 
+    },
+    { 
+      text: 'Trash', 
+      icon: <DeleteIcon />, 
+      path: '/create' 
+    },
+  ];
+
+    return (
+        <Box sx={
+            {display: 'flex'}
+        }>
+           
+      <Drawer variant="permanent" open={props.open}>
+        <DrawerHeader/>
+       
+       
+       
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+          {menuItems.map((item) => (
+            <ListItem 
+              button 
+              key={item.text} 
+              
+              //className={location.pathname == item.path ? classes.active : null}
+            >
+              <ListItemIcon onMouseOver={handleDrawerOpen}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
             </ListItem>
           ))}
         </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        
+        
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        </Box>
-        </Box>
-  )}
+   </Box>
+    )
+}

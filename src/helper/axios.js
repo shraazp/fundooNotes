@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {getToken, setUserSession} from '../utils/Common';
+import {setUserSession} from '../utils/Common';
 const userConnect = (url, datas) => {
     axios({method: "post", url: url, data: datas}).then(function (response) {
         setUserSession(response.data.message)
@@ -18,7 +18,19 @@ const getNotes = (url, token) => {
             Authorization: token
         }
     }))}
+
+const createNotes=(url,data,token)=>{
+    return(axios({
+        method: "post",
+        url: url,
+        data:data,
+        headers: {
+            Authorization: token
+        }
+    }))
+}
 export {
     userConnect,
-    getNotes
+    getNotes,
+    createNotes
 }

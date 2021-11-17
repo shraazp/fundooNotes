@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React,{ useState, useEffect }  from 'react';
 import '../css/appbar.css'
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,7 +6,6 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Logo from '../assets/note.png'
 import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import Badge from '@mui/material/Badge';
 import ViewStreamSharpIcon from '@mui/icons-material/ViewStreamSharp';
@@ -16,43 +15,17 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { styled, useTheme } from '@mui/material/styles';
-import MuiDrawer from '@mui/material/Drawer';
+import { styled} from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
-import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
-import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
-import DeleteIcon from '@mui/icons-material/Delete';
+import {TextField,
+InputAdornment,
+} from "@mui/material";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { selectedNote } from "../actions/notesActions";
 const drawerWidth = 240;
 
-const openedMixin = (theme) => ({
-  width: drawerWidth,
- 
-  overflowX: 'hidden',
-});
 
-const closedMixin = (theme) => ({
-  
-  overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(9)} + 1px)`,
-  },
-});
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-}));
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
   })(({ theme, open }) => ({
@@ -63,61 +36,31 @@ const AppBar = styled(MuiAppBar, {
     }),
   }));
   
-  const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
-      width: drawerWidth,
-      flexShrink: 0,
-      whiteSpace: 'nowrap',
-      boxSizing: 'border-box',
-      ...(open && {
-        ...openedMixin(theme),
-        '& .MuiDrawer-paper': openedMixin(theme),
-      }),
-      ...(!open && {
-        ...closedMixin(theme),
-        '& .MuiDrawer-paper': closedMixin(theme),
-      }),
-    }),
-  );
+ 
+
   
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: '#ebe8e8',
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
 
-export default function Appbar() {
+
+export default function Appbar(props) {
+
+  const [search, setSearch] = useState("");
+  const notes = useSelector((state) => state.allNotes.notes);
+  const dispatch = useDispatch();
+  const handleSearch = (searchValue) => {
+    setSearch(searchValue);
+  };
+
+  useEffect(() => {
+    dispatch(
+      selectedNote(
+        notes.filter((item) => {
+          return (item.title.toLowerCase().includes(search.toLowerCase())||(item.content.toLowerCase().includes(search.toLowerCase())));
+        })
+      )
+    )
+   },[search,notes]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -137,16 +80,8 @@ export default function Appbar() {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+ 
+  
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -203,45 +138,18 @@ export default function Appbar() {
       </MenuItem>
     </Menu>
   );
-  const menuItems = [
-    { 
-      text: 'Notes', 
-      icon: <LightbulbOutlinedIcon/>, 
-      path: '/' 
-    },
-    { 
-      text: 'Remainders', 
-      icon: < NotificationsNoneOutlinedIcon />, 
-      path: '/create' 
-    },
-    { 
-      text: 'Edit labels', 
-      icon: <CreateOutlinedIcon />, 
-      path: '/create' 
-    },
-    { 
-      text: 'Archieve', 
-      icon: < ArchiveOutlinedIcon/>, 
-      path: '/login' 
-    },
-    { 
-      text: 'Trash', 
-      icon: <DeleteIcon />, 
-      path: '/create' 
-    },
-  ];
+ 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar position="fixed" open={open}style={{ background: "#ffffff" }}>
+      <AppBar position="fixed"style={{ background: "#ffffff" }}>
         <Toolbar>
           <IconButton 
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={props.handleDrawerOpen}
             edge="start"
             sx={{
               marginRight: '36px',
-              ...(open && { display: 'none' }),
                color: "#4d4c4c" 
             }}
           >
@@ -258,18 +166,21 @@ export default function Appbar() {
             <span className="fundooNotesDash">FundooNotes</span>
           </Typography>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon sx={{ color: "#4d4c4c" }} />
-            </SearchIconWrapper>
-            <StyledInputBase
-              style={{ maxWidth: 800, color: "#6e6a6a" }}
-              placeholder="Search"
-              inputProps={{ "aria-label": "search" }}
-              color="secondary"
-              margin="dense"
-            />
-          </Search>
+          <TextField
+          placeholder="Search…"
+          style={{ width: "50%", margin: "auto" }}
+          variant="outlined"
+          size="small"
+          onChange={(e) => handleSearch(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+            style: { height: "44px" },
+          }}
+        />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton size="large" color="inherit">
@@ -304,30 +215,7 @@ export default function Appbar() {
       </AppBar>  {renderMobileMenu}
       {renderMenu}
     
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            <MenuIcon />
-          </IconButton>
-        </DrawerHeader>
-       
-
-        <List>
-          {menuItems.map((item) => (
-            <ListItem 
-              button 
-              key={item.text} 
-             // onClick={() => history.push(item.path)}
-              //className={location.pathname == item.path ? classes.active : null}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
-          ))}
-        </List>
-        
-        
-      </Drawer>
+      
    </Box>
     
   );

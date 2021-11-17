@@ -1,31 +1,49 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import Appbar from "../components/AppBar";
-import NoteCard from '../components/NoteCard'
-import {Box, Grid} from "@mui/material";
-import notes from '../service/noteRetrieve'
+import NoteCard from '../components/NoteCard';
+import SideBar from "../components/SideBar";
+import {noteRetrieve} from '../service/noteRetrieve'
+//import AddNoteForm from "../components/AddNote";
+import {Redirect} from "react-router-dom"
+import { useDispatch } from "react-redux";
+import { setNotes } from "../actions/notesActions";
 
 const Dashboard = () => {
-  const [note, setNote] = useState([]);
+  const dispatch = useDispatch();
+ 
   useEffect(() => {
     fetchitem();
   }, []);
   const fetchitem = () => {
-    notes()
+   
+    noteRetrieve()
       .then((res) => {
-        setNote(res.data);
+        dispatch(setNotes(res.data));
       })
       .catch((err) => {
         console.log(err);
+        <Redirect to="login" />
       });
   };
- 
+  const [open, setOpen] = React.useState(false);
 
-    return (<Box  m={2} pt={10}sx={
-        {display: "flex"}
-    }>
-        <Appbar/> 
-        <Grid container spacing={4}>
-             <NoteCard notes={note}/>
-           </Grid> </Box>)
+  const handleDrawer = () => {
+    (open)?setOpen(false):setOpen(true)
+  };
+
+    return (
+    <div>
+        <Appbar handleDrawerOpen={handleDrawer} /> 
+        <SideBar open={open} setOpen={setOpen}/>
+      <br/><br/><br/><br/>
+
+
+     <div className="note-cards">
+       <NoteCard />
+       </div>
+      
+        
+    </div>
+        )
 }
 export default Dashboard
