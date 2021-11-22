@@ -13,10 +13,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import {update} from "../service/noteRetrieve";
-import { useDispatch } from "react-redux";
+import {useDispatch} from "react-redux";
 import { updateNote } from "../actions/notesActions";
-import { updateNotes } from "../helper/axios";
-const Note = () => {
+
+const Note = ({classes}) => {
     const [open, setOpen] = React.useState(false);
     const [hover, setHover] = React.useState(false);
     const [title, setTitle] = React.useState("")
@@ -38,15 +38,12 @@ const Note = () => {
     const handleClose = () => {
         setOpen(false);
     };
-    
- 
+
+
     const handleUpdate = () => {
-        update(data, noteId).then((res)=>{ 
-          console.log(res);
-          dispatch(updateNotes(res,noteId))
-       
-          } 
-          ).catch((err) => console.log(err.message));
+        update(data, noteId).then((res) => {
+            dispatch(updateNote(res))
+        }).catch((err) => console.log(err.message));
         handleClose()
     }
 
@@ -91,7 +88,8 @@ const Note = () => {
                 })
             } </Grid>
             <div>
-                <Dialog open={open}
+                <Dialog fullWidth maxWidth="sm"
+                    open={open}
                     onClose={handleClose}
                     // Allows other things to take focus
                     hideBackdrop

@@ -21,10 +21,10 @@ export const addNewNote = (note) => {
   };
 };
 
-export const updateNote = (note,noteId) => {
+export const updateNote = (note) => {
   return {
     type: ActionTypes.UPDATE_NOTE,
-    payload: note,
-    id:noteId
+    payload: note
+    
   };
 };

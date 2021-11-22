@@ -4,7 +4,7 @@ const intialState = {
     searchNotes: []
 };
 
-export const notesReducer = (state = intialState, {type, payload,noteId}) => {
+export const notesReducer = (state = intialState, {type, payload}) => {
     switch (type) {
         case ActionTypes.SET_NOTES:
             return {
@@ -17,6 +17,7 @@ export const notesReducer = (state = intialState, {type, payload,noteId}) => {
                 searchNotes: payload
             };
         case ActionTypes.ADD_NEW_NOTE:
+         
             return {
                 ...state,
                 notes: [
@@ -25,16 +26,17 @@ export const notesReducer = (state = intialState, {type, payload,noteId}) => {
                 ]
             };
         case ActionTypes.UPDATE_NOTE:
+        
+          let newNote = [...state.notes];
+          console.log(payload)
          
-          return state.notes.map((note)=>{
-            if(note.id === noteId) {
-              return {
-                 ...note,
-                 title:payload.title,
-                content:payload.content
-              }
-            } else return note;
-          })
+          let index=state.notes.findIndex(note=>note._id===payload.data._id)
+         newNote[index]=payload.data
+     
+     
+      return {...state,notes:newNote}
+
+           
         default:
             return state;
     }
