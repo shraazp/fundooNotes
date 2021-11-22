@@ -6,14 +6,14 @@ import {useForm} from '../components/useForm';
 import {Link} from '@mui/material';
 import userPost from '../service/userRegister';
 import {Grid, Paper} from '@material-ui/core';
-import { useHistory } from 'react-router-dom'
+import {Redirect } from 'react-router-dom'
 
 const initialFValues = {
     email: "",
     password: ""
 }
 export default function Login() {
-    let history = useHistory();
+ const  [success,setSuccess]=React.useState(false)
     const validate = (fieldValues = values) => {
         let temp = {
             // eslint-disable-next-line
@@ -42,7 +42,8 @@ export default function Login() {
         e.preventDefault()
         if (validate()) {
             userPost('users/login', data)
-            history.push('/dashboard');
+            setSuccess(true)
+           
         }
     }
     const paperStyle = {
@@ -105,6 +106,7 @@ export default function Login() {
                             onClick={handleSubmit}>Login</Button>
                     </div>
                 </form>
+                {success?<Redirect to="/dashboard"/>:null}
             </Paper>
         </Grid>
     );

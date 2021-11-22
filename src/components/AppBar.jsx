@@ -8,7 +8,8 @@ import Logo from '../assets/note.png'
 import Typography from '@mui/material/Typography';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import Badge from '@mui/material/Badge';
-import ViewStreamSharpIcon from '@mui/icons-material/ViewStreamSharp';
+import ViewStreamRoundedIcon from '@mui/icons-material/ViewStreamRounded';
+import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
@@ -36,9 +37,7 @@ const AppBar = styled(MuiAppBar, {
     }),
   }));
   
- 
 
-  
 
 
 
@@ -80,7 +79,10 @@ export default function Appbar(props) {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
- 
+  
+  function refreshPage() {
+    window.location.reload(false);
+  }
   
 
   const menuId = 'primary-search-account-menu';
@@ -163,7 +165,7 @@ export default function Appbar(props) {
             sx={{ display: { xs: "none", sm: "block" } }}
           >
             &nbsp;
-            <span className="fundooNotesDash">FundooNotes</span>
+            <span   style={{color:"black"}}>{props.title}</span>
           </Typography>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <TextField
@@ -185,12 +187,12 @@ export default function Appbar(props) {
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton size="large" color="inherit">
               <Badge>
-                <RefreshIcon sx={{ color: "#4d4c4c" }} />
+                <RefreshIcon onClick={refreshPage}sx={{ color: "#4d4c4c" }} />
               </Badge>
             </IconButton>
             <IconButton size="large" color="inherit">
               <Badge>
-                <ViewStreamSharpIcon sx={{ color: "#4d4c4c" }} />
+                <ViewStreamRoundedIcon sx={{ color: "#4d4c4c" }} />
               </Badge>
             </IconButton>
             <IconButton size="large" color="inherit">

@@ -11,7 +11,7 @@ function App() {
         <div className="App">
            
             <Router>
-                <Route path="/login">
+                <Route path="/"exact>
                     <Login/></Route>
                 <Route path="/register">
                     <RegForm/></Route>

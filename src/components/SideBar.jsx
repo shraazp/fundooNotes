@@ -11,7 +11,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import { makeStyles } from '@material-ui/core/styles';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -52,11 +52,21 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
   }),
 );
-
+const ListItemsColour = styled(ListItem)`
+&:hover {
+  background-color: #e6e8e6;
+}
+&:click {
+  background-color: #e6e8e6;
+}
+&:focus {
+  background-color: #f5cb90;
+}
+`;
 export default function SideBar(props) {
- 
+  
   const handleDrawerOpen = () => {
-    props.setOpen(true);
+    props.setOpen(true)
   };
 
   // const handleDrawerClose = () => {
@@ -93,24 +103,30 @@ export default function SideBar(props) {
     return (
         <Box sx={
             {display: 'flex'}
-        }>
+        } onMouseOver={handleDrawerOpen}>
            
       <Drawer variant="permanent" open={props.open}>
+     
         <DrawerHeader/>
        
        
        
         <List>
           {menuItems.map((item) => (
-            <ListItem 
+            <ListItemsColour 
+           
               button 
+             
               key={item.text} 
               
-              //className={location.pathname == item.path ? classes.active : null}
-            >
-              <ListItemIcon onMouseOver={handleDrawerOpen}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
+              onClick={() => props.handleClick(item.text)
+                }
+              
+              
+          >
+              <ListItemIcon  >{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text}/>
+            </ListItemsColour>
           ))}
         </List>
         

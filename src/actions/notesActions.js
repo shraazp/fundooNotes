@@ -13,3 +13,18 @@ export const selectedNote = (notes) => {
     payload: notes,
   };
 };
+
+export const addNewNote = (note) => {
+  return {
+    type: ActionTypes.ADD_NEW_NOTE,
+    payload: note,
+  };
+};
+
+export const updateNote = (note,noteId) => {
+  return {
+    type: ActionTypes.UPDATE_NOTE,
+    payload: note,
+    id:noteId
+  };
+};

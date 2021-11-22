@@ -72,7 +72,7 @@ export default function ForgotPassword() {
                     <div className="createAndLogin">
                     <div className="createUser">
                         <br/>
-                            <Link href="/login">Back</Link>
+                            <Link href="/">Back</Link>
                         </div>
                         <Button variant="contained"
                             style={btnstyle}

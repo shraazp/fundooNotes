@@ -206,7 +206,7 @@ export default function RegForm() {
 
                                 <div className="signInSignUp">
                                     <div className="signIn">
-                                    <Link href="/login">sign in instead</Link>
+                                    <Link href="/">sign in instead</Link>
                                     </div>
                                     <div className="signUp">
                                         <Button variant="contained" onClick={handleSubmit}>Sign Up</Button>

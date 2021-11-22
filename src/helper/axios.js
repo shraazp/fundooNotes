@@ -17,13 +17,24 @@ const getNotes = (url, token) => {
         headers: {
             Authorization: token
         }
-    }))}
+    }))
+}
 
-const createNotes=(url,data,token)=>{
+const createNotes = (url, data, token) => {
     return(axios({
         method: "post",
         url: url,
-        data:data,
+        data: data,
+        headers: {
+            Authorization: token
+        }
+    }))
+}
+const updateNotes = (url, data, token) => {
+    return(axios({
+        method: "put",
+        url: url,
+        data: data,
         headers: {
             Authorization: token
         }
@@ -32,5 +43,6 @@ const createNotes=(url,data,token)=>{
 export {
     userConnect,
     getNotes,
-    createNotes
+    createNotes,
+    updateNotes
 }

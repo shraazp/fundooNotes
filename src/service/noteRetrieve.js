@@ -1,21 +1,31 @@
 import {getToken} from '../utils/Common';
-import {getNotes,createNotes} from '../helper/axios'
+import {getNotes, createNotes, updateNotes} from '../helper/axios'
 const token = getToken("token");
-const url = "http://localhost:5000/notes"
+let url = "http://localhost:5000/notes"
 const noteRetrieve = () => {
-    console.log(token)
     return getNotes(url, `bearer ${token}`).then((response) => {
-        console.log(response)
         return response;
     }).catch((err) => {
         throw err;
     });
 };
-const create=(data)=>{
-return createNotes(url,data,`bearer ${token}`).then((response)=>{
-    console.log(response)
-}).catch((err)=>{
-    console.log(err)
-})
+const create = (data) => {
+    return createNotes(url, data, `bearer ${token}`).then((response) => {
+        return response
+    }).catch((err) => {
+        throw err
+    })
 }
-export{noteRetrieve,create}
+const update = (data,id) => {
+    url=`http://localhost:5000/notes/${id}`
+    return updateNotes(url, data, `bearer ${token}`).then((response) => {
+        return response;
+    }).catch((err) => {
+        throw err;
+    })
+}
+export {
+    noteRetrieve,
+    create,
+    update
+}
