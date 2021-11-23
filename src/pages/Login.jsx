@@ -41,9 +41,7 @@ export default function Login() {
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            userPost('users/login', data)
-            setSuccess(true)
-           
+            userPost('users/login', data).then((res)=>{ (res.status)?setSuccess(true):setSuccess(false)}).catch((err)=>{alert(err)})
         }
     }
     const paperStyle = {

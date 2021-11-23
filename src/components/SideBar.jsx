@@ -11,6 +11,8 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
+
+import {Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 const drawerWidth = 240;
 
@@ -96,7 +98,7 @@ export default function SideBar(props) {
     { 
       text: 'Trash', 
       icon: <DeleteIcon />, 
-      path: '/create' 
+      path: "/trash"
     },
   ];
 
@@ -119,7 +121,8 @@ export default function SideBar(props) {
              
               key={item.text} 
               
-              onClick={() => props.handleClick(item.text)
+              onClick={() =>{ props.handleClick(item.text);
+                window.location = item.path;}
                 }
               
               

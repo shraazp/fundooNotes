@@ -2,13 +2,12 @@ import React, {useEffect } from "react";
 import Appbar from "../components/AppBar";
 import NoteCard from '../components/NoteCard';
 import SideBar from "../components/SideBar";
-import {noteRetrieve} from '../service/noteRetrieve'
-import AddNoteForm from "../components/AddNote";
+import {noteRetrieve} from '../service/noteRetrieve';
 import {Redirect} from "react-router-dom"
 import { useDispatch } from "react-redux";
 import { setNotes } from "../actions/notesActions";
 
-const Dashboard = () => {
+const Trash = () => {
   const dispatch = useDispatch();
  
   useEffect(() => {
@@ -40,14 +39,12 @@ const handleClick=(title)=>{
         <Appbar handleDrawerOpen={handleDrawer} title={title} /> 
         <SideBar open={open} setOpen={setOpen} handleClick={handleClick}/>
       <br/><br/><br/><br/>
-
-<AddNoteForm/>
      <div className="note-cards">
-       <NoteCard value={false} />
+       <NoteCard value={true}/>
        </div>
      
         
     </div>
         )
 }
-export default Dashboard
+export default Trash

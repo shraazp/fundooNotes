@@ -1,11 +1,11 @@
 import axios from 'axios'
 import {setUserSession} from '../utils/Common';
 const userConnect = (url, datas) => {
-    axios({method: "post", url: url, data: datas}).then(function (response) {
+    return axios({method: "post", url: url, data: datas}).then(function (response) {
         setUserSession(response.data.message)
-        console.log(response.data)
+        return(response.data)
     }).catch(function (error) {
-        console.log(error);
+        throw(error);
 
     });
 }

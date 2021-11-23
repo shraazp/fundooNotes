@@ -19,13 +19,16 @@ const create = (data) => {
 const update = (data,id) => {
     url=`http://localhost:5000/notes/${id}`
     return updateNotes(url, data, `bearer ${token}`).then((response) => {
+        console.log(response)
         return response;
     }).catch((err) => {
         throw err;
     })
 }
+
 export {
     noteRetrieve,
     create,
-    update
+    update,
+   
 }
