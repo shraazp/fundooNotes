@@ -17,7 +17,7 @@ export const notesReducer = (state = intialState, {type, payload}) => {
                 searchNotes: payload
             };
         case ActionTypes.ADD_NEW_NOTE:
-         
+
             return {
                 ...state,
                 notes: [
@@ -26,17 +26,24 @@ export const notesReducer = (state = intialState, {type, payload}) => {
                 ]
             };
         case ActionTypes.UPDATE_NOTE:
-        
-          let newNote = [...state.notes];
-          console.log(payload)
-         
-          let index=state.notes.findIndex(note=>note._id===payload.data._id)
-         newNote[index]=payload.data
-     
-     
-      return {...state,notes:newNote}
 
-           
+            let newNote = [...state.notes];
+
+
+            let index = state.notes.findIndex(note => note._id === payload.data._id)
+            newNote[index] = payload.data
+
+
+            return {
+                ...state,
+                notes: newNote
+            }
+
+        case ActionTypes.DELETE_NOTE:
+            return {
+                ...state,
+                notes: state.notes.filter(item => item._id !== payload)
+            };
         default:
             return state;
     }

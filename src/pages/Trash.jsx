@@ -6,10 +6,11 @@ import {noteRetrieve} from '../service/noteRetrieve';
 import {Redirect} from "react-router-dom"
 import { useDispatch } from "react-redux";
 import { setNotes } from "../actions/notesActions";
+import DeleteNote from "../components/DeleteNote";
 
 const Trash = () => {
   const dispatch = useDispatch();
- 
+  
   useEffect(() => {
     fetchitem();
   }, []);
@@ -39,9 +40,10 @@ const handleClick=(title)=>{
         <Appbar handleDrawerOpen={handleDrawer} title={title} /> 
         <SideBar open={open} setOpen={setOpen} handleClick={handleClick}/>
       <br/><br/><br/><br/>
-     <div className="note-cards">
-       <NoteCard value={true}/>
-       </div>
+    
+
+       <DeleteNote/>
+    
      
         
     </div>

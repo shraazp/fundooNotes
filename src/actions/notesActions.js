@@ -25,6 +25,12 @@ export const updateNote = (note) => {
   return {
     type: ActionTypes.UPDATE_NOTE,
     payload: note
-    
+  };
+};
+
+export const deleteNote = (noteId) => {
+  return {
+    type: ActionTypes.DELETE_NOTE,
+    payload: noteId
   };
 };

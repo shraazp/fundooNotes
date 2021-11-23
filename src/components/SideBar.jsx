@@ -11,7 +11,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import { useHistory } from "react-router-dom"
 import {Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 const drawerWidth = 240;
@@ -66,19 +66,19 @@ const ListItemsColour = styled(ListItem)`
 }
 `;
 export default function SideBar(props) {
-  
+  let history = useHistory()
   const handleDrawerOpen = () => {
     props.setOpen(true)
   };
 
-  // const handleDrawerClose = () => {
-  //   props.setOpen(false);
-  // };
+  const handleDrawerClose = () => {
+    props.setOpen(false);
+  };
   const menuItems = [
     { 
       text: 'Notes', 
       icon: <LightbulbOutlinedIcon/>, 
-      path: '/' 
+      path: '/dashboard' 
     },
     { 
       text: 'Remainders', 
@@ -105,15 +105,16 @@ export default function SideBar(props) {
     return (
         <Box sx={
             {display: 'flex'}
-        } onMouseOver={handleDrawerOpen}>
+        } >
            
-      <Drawer variant="permanent" open={props.open}>
+      <Drawer variant="permanent" open={props.open} onMouseOver={() => handleDrawerOpen()}
+      onMouseLeave={() => handleDrawerClose()}>
      
         <DrawerHeader/>
        
        
        
-        <List>
+        <List >
           {menuItems.map((item) => (
             <ListItemsColour 
            
@@ -122,12 +123,12 @@ export default function SideBar(props) {
               key={item.text} 
               
               onClick={() =>{ props.handleClick(item.text);
-                window.location = item.path;}
+                history.push(item.path)}
                 }
               
               
           >
-              <ListItemIcon  >{item.icon}</ListItemIcon>
+              <ListItemIcon onClick={() =>{ props.handleClick(item.text);}} >{item.icon}</ListItemIcon>
               <ListItemText primary={item.text}/>
             </ListItemsColour>
           ))}

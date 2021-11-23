@@ -11,7 +11,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {update,moveTrash} from "../service/noteRetrieve";
+import {update} from "../service/noteRetrieve";
 import {useDispatch} from "react-redux";
 import {updateNote} from "../actions/notesActions";
 
@@ -42,24 +42,27 @@ const Note = ({value}) => {
         }).catch((err) => console.log(err.message));
         handleClose()
     }
-    const handleDelete=()=>{
-        const data = {
-            title: title,
-            content: content,
+    
+    const handleDelete=(item)=>{
+        const dataDelete = {
+            title: item.title,
+            content: item.content,
             isTrash:true
         };
-        update(data, noteId).then((res) => {
+        update(dataDelete, item._id).then((res) => {
             dispatch(updateNote(res))
         }).catch((err) => console.log(err.message));
     }
     const notes = useSelector((state) => state.allNotes.searchNotes);
     return((notes.length > 0) ? (
         <div>
+           
+
             <Grid container
                 spacing={4}>
                 {
                 notes.map((item) => {
-                    if (item.isTrash === value) {
+                    if (item.isTrash === false) {
                         return (
                             <Grid item
                                 xs={4}
@@ -87,7 +90,7 @@ const Note = ({value}) => {
                                         {
                                         item.content
                                     } </Typography>
-                                    <DeleteIcon onClick={handleDelete}/>
+                                    <DeleteIcon onClick={()=>{handleDelete(item)}}/>
                                 </Card>
                             </Grid>
                         );
