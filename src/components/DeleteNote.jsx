@@ -14,25 +14,28 @@ import {useDispatch} from "react-redux";
 import {updateNote, deleteNote} from "../actions/notesActions";
 import {update, Delete} from "../service/noteRetrieve";
 import Snackbar from '@mui/material/Snackbar';
+import CloseIcon from "@material-ui/icons/Close";
 const DeleteNote = () => {
     const [hover, setHover] = React.useState([]);
     const [open,setOpen] = React.useState(false)
-      
+    const [itemRemoved,setItemRemoved]=React.useState("")
     const dispatch = useDispatch();
     const handleRestore = (item) => {
         const data = {
             title: item.title,
             content: item.content,
-            isTrash: false
+            isTrash: false,
+            color:item.color
         };
         update(data, item._id).then((res) => {
             dispatch(updateNote(res))
+            setOpen(true)
         }).catch((err) => console.log(err.message));
     }
     const handleDelete = (item) => {
         Delete(item._id).then((res) => {
             dispatch(deleteNote(item._id))
-            setOpen(true)
+           
         }).catch((err) => {
             console.log(err)
         })
@@ -50,8 +53,21 @@ const DeleteNote = () => {
             }
         })
     }
+    const undoRestore=(itemRemoved)=>{
+        const dataRestore = {
+            title: itemRemoved.title,
+            content: itemRemoved.content,
+            isTrash: true,
+            color:itemRemoved.color
+        };
+        update(dataRestore, itemRemoved._id).then((res) => {
+            dispatch(updateNote(res))
+            setOpen(true)
+        }).catch((err) => console.log(err.message));
+    }
     return (
         <div className="trash">
+           
             <div className="trash-text-out">
                 <div className="trash-text">
                     <span>Notes in trash are deleted after 7 days</span>
@@ -75,7 +91,7 @@ const DeleteNote = () => {
                                     key={
                                         item._id
                                 }>
-                                    <Card className="notesCard"
+                                    <Card className="notesCard" style={{background:item.color}}
                                         onMouseEnter={
                                             () => {
                                                 setHover({[index]: true});
@@ -100,7 +116,7 @@ const DeleteNote = () => {
                                        {hover[index] ? (<div className="delete-icons">
                                           <IconButton title="Delete forever" fontSize="small" onClick={
                                                 () => {
-                                                    handleDelete(item)
+                                                   handleDelete(item)
                                                 }
                                             }>
                                         <DeleteForeverIcon  fontSize="small"
@@ -108,11 +124,27 @@ const DeleteNote = () => {
                                            <IconButton title="Restore"fontSize="small"
                                             onClick={
                                                 () => {
+                                                  setItemRemoved(item)
                                                     handleRestore(item)
+                                                    
                                                 }
                                             }>
                                         <RestoreFromTrashIcon  fontSize="small" /></IconButton></div>):null}
-
+                                        <Snackbar
+                                            anchorOrigin={{
+                                                horizontal: "right",
+                                                vertical: "bottom",
+                                            }}
+                                            open={open}
+                                            autoHideDuration={5000}
+                                            message="Note restored"
+                                            onClose={handleToClose}
+                                            action={
+                                            <div>
+                                            <Button variant="text" onClick={()=>{undoRestore(itemRemoved)}}>UNDO</Button>
+                                            <CloseIcon fontSize="small"  onClick={handleToClose}/></div>
+                                            }
+                                        />
                                     </Card>
                             </Grid>
                             );
@@ -120,18 +152,9 @@ const DeleteNote = () => {
                     })
                    
                 } </Grid>
-               <Snackbar
-        anchorOrigin={{
-          horizontal: "right",
-          vertical: "bottom",
-        }}
-        open={open}
-        autoHideDuration={5000}
-        message="Note deleted permanently"
-        onClose={handleToClose}
         
-      />
             </div>
+              
         </div>
 
     );

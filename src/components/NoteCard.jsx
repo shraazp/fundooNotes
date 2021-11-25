@@ -3,6 +3,7 @@ import {
     Card,
     Typography,
     Button,
+    IconButton
 } from "@mui/material";
 import React from "react";
 import '../css/notes.css'
@@ -16,23 +17,31 @@ import {useDispatch} from "react-redux";
 import {updateNote} from "../actions/notesActions";
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from "@material-ui/icons/Close";
+import PaletteIcon from '@mui/icons-material/Palette';
+import Popover from '@mui/material/Popover';
+import Brightness1Icon from '@mui/icons-material/Brightness1';
+import colorPaletteClassName from "./ColorPalette";
 const Note = ({value}) => {
     const [open, setOpen] = React.useState(false);
     const [title, setTitle] = React.useState("")
     const [content, setContent] = React.useState("")
     const [noteId, setNoteId] = React.useState("")
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [color,setColor]=React.useState("White")
     const dispatch = useDispatch();
     const [openSnackbar,setOpenSnackbar] = React.useState(false)
     const data = {
         title: title,
         content: content,
-        isTrash:false
+        isTrash:false,
+        color:color
     };
     const handleClickOpen = (item) => {
         setTitle(item.title);
         setContent(item.content);
         setNoteId(item._id)
         setOpen(true);
+        setColor(item.color)
 
     };
     const handleClose = () => {
@@ -49,7 +58,8 @@ const Note = ({value}) => {
         const dataDelete = {
             title: item.title,
             content: item.content,
-            isTrash:true
+            isTrash:true,
+            color:item.color
         };
         update(dataDelete, item._id).then((res) => {
             dispatch(updateNote(res))
@@ -60,6 +70,15 @@ const Note = ({value}) => {
         if ("clickaway" === reason) return;
         setOpenSnackbar(false);
       };
+      const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+      };
+    
+      const handlePClose = () => {
+        setAnchorEl(null);
+      };
+      const openA = Boolean(anchorEl);
+      const id = openA ? 'simple-popover' : undefined;
     const notes = useSelector((state) => state.allNotes.searchNotes);
     const listView = useSelector((state) => state.allNotes.listView);
     return((notes.length > 0) ? (
@@ -76,7 +95,7 @@ const Note = ({value}) => {
                                     item._id
                             }>
                                 <Card className="notesCard"
-                                   >
+                               style={{background:item.color}}    >
                                     <Typography variant="h5" onClick={
                                         () => {
                                             handleClickOpen(item)
@@ -96,6 +115,27 @@ const Note = ({value}) => {
                                         {
                                         item.content
                                     } </Typography>
+                                     <IconButton onClick={handleClick}>
+                <PaletteIcon/></IconButton>
+                <Popover id={id}
+        open={openA}
+        anchorEl={anchorEl}
+        onClose={handlePClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}> <Grid container sx={{ p: 1 }}>
+          {colorPaletteClassName.map((colorItem,index)=>{
+          return(
+            <Grid item xs={12} sm={6} md={3} sx={{width:"11px"}} key={index}>
+              <IconButton  onClick={()=>{setColor(colorItem.colorCode);
+                setTitle(item.title);
+                setContent(item.content);
+                setNoteId(item._id)
+                handleUpdate()
+               }}>
+          <Brightness1Icon style={{ color: colorItem.colorCode }} /></IconButton></Grid>)})} </Grid>
+      </Popover>
                                     <DeleteIcon onClick={()=>{handleDelete(item)}}/>
                                 </Card>
                             </Grid>
@@ -103,13 +143,14 @@ const Note = ({value}) => {
                     }
                 })
             } </Grid>
-            <div>
+            <div    >
                 <Dialog fullWidth maxWidth="sm"
                     open={open}
                     onClose={handleClose}
                     hideBackdrop
+                   
                 >
-                    <DialogContent>
+                    <DialogContent  style={{background:color}}>
                         <input className="title" type="text"
                             value={title}
                             onChange={
@@ -125,7 +166,7 @@ const Note = ({value}) => {
                             name="content"
                             placeholder="Take a note..."/>
                     </DialogContent>
-                    <DialogActions>
+                    <DialogActions  style={{background:color}}>
                         <Button onClick={handleClose}>close</Button>
                         <Button onClick={handleUpdate}>Submit</Button>
                     </DialogActions>
