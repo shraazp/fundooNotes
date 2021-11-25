@@ -14,13 +14,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {update} from "../service/noteRetrieve";
 import {useDispatch} from "react-redux";
 import {updateNote} from "../actions/notesActions";
-
+import Snackbar from "@material-ui/core/Snackbar";
+import CloseIcon from "@material-ui/icons/Close";
 const Note = ({value}) => {
     const [open, setOpen] = React.useState(false);
     const [title, setTitle] = React.useState("")
     const [content, setContent] = React.useState("")
     const [noteId, setNoteId] = React.useState("")
     const dispatch = useDispatch();
+    const [openSnackbar,setOpenSnackbar] = React.useState(false)
     const data = {
         title: title,
         content: content,
@@ -51,21 +53,25 @@ const Note = ({value}) => {
         };
         update(dataDelete, item._id).then((res) => {
             dispatch(updateNote(res))
+            setOpenSnackbar(true)
         }).catch((err) => console.log(err.message));
     }
+    const handleToClose = (event, reason) => {
+        if ("clickaway" === reason) return;
+        setOpenSnackbar(false);
+      };
     const notes = useSelector((state) => state.allNotes.searchNotes);
+    const listView = useSelector((state) => state.allNotes.listView);
     return((notes.length > 0) ? (
         <div>
-           
-
             <Grid container
-                spacing={4}>
+                spacing={4} justifyContent={listView ? "center" : null}>
                 {
                 notes.map((item) => {
                     if (item.isTrash === false) {
                         return (
                             <Grid item
-                                xs={4}
+                            xs={12} md={listView ? 8 : 3}
                                 key={
                                     item._id
                             }>
@@ -125,6 +131,19 @@ const Note = ({value}) => {
                     </DialogActions>
                 </Dialog>
             </div>
+            <Snackbar
+        anchorOrigin={{
+          horizontal: "right",
+          vertical: "bottom",
+        }}
+        open={openSnackbar}
+        autoHideDuration={5000}
+        message="Note moved to trash"
+        onClose={handleToClose} 
+        action={
+              <CloseIcon fontSize="small"  onClick={handleToClose}/>
+        }
+      />
         </div>
     ) : (
         <span>No matching results.</span>

@@ -8,8 +8,10 @@ import Logo from '../assets/note.png'
 import Typography from '@mui/material/Typography';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import Badge from '@mui/material/Badge';
-import ViewStreamRoundedIcon from '@mui/icons-material/ViewStreamRounded';
-import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
+
+import SplitscreenOutlinedIcon from "@mui/icons-material/SplitscreenOutlined";
+import GridViewIcon from "@mui/icons-material/GridView";
+
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
@@ -23,7 +25,7 @@ InputAdornment,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { selectedNote } from "../actions/notesActions";
+import { selectedNote,listView } from "../actions/notesActions";
 const drawerWidth = 240;
 
 
@@ -46,6 +48,7 @@ export default function Appbar(props) {
 
   const [search, setSearch] = useState("");
   const notes = useSelector((state) => state.allNotes.notes);
+  const list = useSelector((state) => state.allNotes.listView);
   const dispatch = useDispatch();
   const handleSearch = (searchValue) => {
     setSearch(searchValue);
@@ -60,6 +63,9 @@ export default function Appbar(props) {
       )
     )
    },[search,notes]);
+   const handleView = () => {
+    dispatch(listView());
+  };
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -190,11 +196,22 @@ export default function Appbar(props) {
                 <RefreshIcon onClick={refreshPage}sx={{ color: "#4d4c4c" }} />
               </Badge>
             </IconButton>
-            <IconButton size="large" color="inherit">
-              <Badge>
-                <ViewStreamRoundedIcon sx={{ color: "#4d4c4c" }} />
-              </Badge>
-            </IconButton>
+            {!list ? (
+               <IconButton size="large" color="inherit"><Badge>
+          <SplitscreenOutlinedIcon
+            fontSize="medium"
+            onClick={handleView}
+            style={{ marginLeft: "15px", color: "#4d4c4c"}}
+          /> </Badge>
+          </IconButton>
+        ) : ( <IconButton size="large" color="inherit"><Badge>
+          <GridViewIcon
+            fontSize="medium"
+            onClick={handleView}
+            style={{ marginLeft: "15px",color: "#4d4c4c" }}
+          /> </Badge>
+          </IconButton>
+        )}
             <IconButton size="large" color="inherit">
               <Badge>
                 <SettingsSharpIcon sx={{ color: "#4d4c4c" }} />

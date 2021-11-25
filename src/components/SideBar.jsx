@@ -11,9 +11,6 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useHistory } from "react-router-dom"
-import {Redirect } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -56,17 +53,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 const ListItemsColour = styled(ListItem)`
 &:hover {
-  background-color: #e6e8e6;
+  background-color:#e8e6e6;
 }
 &:click {
-  background-color: #e6e8e6;
+  background-color: #e8e6e6;
 }
 &:focus {
   background-color: #f5cb90;
 }
+border-radius: 0 25px 25px 0;
 `;
 export default function SideBar(props) {
-  let history = useHistory()
+
+  
   const handleDrawerOpen = () => {
     props.setOpen(true)
   };
@@ -78,7 +77,7 @@ export default function SideBar(props) {
     { 
       text: 'Notes', 
       icon: <LightbulbOutlinedIcon/>, 
-      path: '/dashboard' 
+      path: "notes"
     },
     { 
       text: 'Remainders', 
@@ -98,7 +97,7 @@ export default function SideBar(props) {
     { 
       text: 'Trash', 
       icon: <DeleteIcon />, 
-      path: "/trash"
+      path: "trash"
     },
   ];
 
@@ -123,7 +122,7 @@ export default function SideBar(props) {
               key={item.text} 
               
               onClick={() =>{ props.handleClick(item.text);
-                history.push(item.path)}
+               props.setPath(item.path)}
                 }
               
               

@@ -47,7 +47,7 @@ export default function ForgotPassword() {
     }
     return (
         
-        <Grid>
+        <Grid className="forgot-password">
             
             <Paper elevation={10}
                 style={paperStyle}>

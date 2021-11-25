@@ -34,3 +34,10 @@ export const deleteNote = (noteId) => {
     payload: noteId
   };
 };
+
+export const listView = (flag) => {
+  return {
+    type: ActionTypes.LIST_VIEW,
+    payload: flag,
+  };
+};

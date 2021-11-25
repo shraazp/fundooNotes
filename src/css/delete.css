@@ -66,3 +66,12 @@
     min-width: 0;
     width: 100%;
   }
+  .delete-icons{
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+    
+  }
+  .trash-button{
+    margin-left: 16px!important
+  }
