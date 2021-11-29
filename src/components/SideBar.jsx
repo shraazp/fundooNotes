@@ -106,7 +106,7 @@ export default function SideBar(props) {
             {display: 'flex'}
         } >
            
-      <Drawer  style={{border: 'rgba(0,0,0,0)' }} variant="permanent" open={props.open} onMouseOver={() => handleDrawerOpen()}
+      <Drawer   variant="permanent" open={props.open} onMouseOver={() => handleDrawerOpen()}
       onMouseLeave={() => handleDrawerClose()}>
      
         <DrawerHeader/>

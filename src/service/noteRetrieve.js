@@ -1,6 +1,6 @@
 import {getToken} from '../utils/Common';
 import {getNotes, createNotes, updateNotes,deleteNotes} from '../helper/axios'
-const token = getToken("token");
+const token = getToken();
 
 const noteRetrieve = () => {
     let url = "http://localhost:5000/notes"

@@ -82,13 +82,13 @@ const Note = () => {
         }).catch((err) => console.log(err.message));
     }
 
-    const handleImage=(imagef,item)=>{
+    const handleImage=(itemf)=>{
         const formData = new FormData()
-        formData.append('title', item.title)
-        formData.append('content', item.content)
-        formData.append('color', item.color)
-        formData.append('profileImg', imagef)
-        update(formData, item._id).then((res) => {
+        formData.append('title', title)
+        formData.append('content', content)
+        formData.append('color', color)
+        formData.append('profileImg', itemf)
+        update(formData, noteId).then((res) => {
             dispatch(updateNote(res))
         }).catch((err) => console.log(err.message));
     }
@@ -98,13 +98,12 @@ const Note = () => {
         setOpenSnackbar(false);
       };
       const handleClick = (event,item) => {
-          console.log(item)
-        setAnchorEl(event.currentTarget);
         setTitle(item.title);
         setContent(item.content);
         setColor(item.color)
         setNoteId(item._id)
       };
+     
     
       const handlePClose = () => {
         setAnchorEl(null);
@@ -161,47 +160,51 @@ const Note = () => {
                                         {
                                         item.content
                                     } </Typography>
- <Fragment>
-        <input
-          accept="image/*"
-          type="file"
-          onChange={(e)=>{
-              console.log(image)
-            handleImage(e.target.files[0],item)}}
-          id="icon-button-file"
-          style={{ display: 'none', }}
-        />
-        <label htmlFor="icon-button-file">
-          <Button
-           
-            component="span"
-            size="large"
-           
-          >
-            <ImageIcon color="action" />
-          </Button>
-        </label>
-      </Fragment>
-                                     <IconButton onClick={(e)=>{ 
+                           <Fragment>
+                                              <input
+                                              accept="image/*"
+                                               type="file"
+                                                onChange={(e)=>{     
+                                          
+                                           handleImage(e.target.files[0])
+                                        }}
+                                                id="icon-button-file"
+                                            style={{ display: 'none', }}
+                                        />
+                              <label htmlFor="icon-button-file">
+                            <IconButton
+                            component="span"
+                            size="large"
+                            onClick={(e)=>{handleClick(e,item);}}
+                            >
+                               
+                            <ImageIcon color="action" />   </IconButton>
+
+                            </label>
+                        
+                            </Fragment>
+
+                            <IconButton onClick={(e)=>{
+                                setAnchorEl(e.currentTarget);
                                          handleClick(e,item)}}>
-                <PaletteIcon/></IconButton>
-                <Popover id={id}
-        open={openA}
-        anchorEl={anchorEl}
-        onClose={handlePClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}> <Grid container sx={{ p: 1 }}>
-          {colorPaletteClassName.map((colorItem,index)=>{
-          return(
-            <Grid item xs={12} sm={6} md={3} sx={{width:"11px"}} key={index}>
-              <IconButton  onClick={()=>{setColor(colorItem.colorCode);
-                handleColorUpdate(colorItem.colorCode)
-               }}>
-          <Brightness1Icon style={{ color: colorItem.colorCode }} /></IconButton></Grid>)})} </Grid>
-      </Popover>
-      <IconButton>
+                                <PaletteIcon/></IconButton>
+                                <Popover id={id}
+                                    open={openA}
+                                    anchorEl={anchorEl}
+                                    onClose={handlePClose}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'left',
+                                    }}> <Grid container sx={{ p: 1 }}>
+                                    {colorPaletteClassName.map((colorItem,index)=>{
+                            return(
+                                    <Grid item xs={12} sm={6} md={3} sx={{width:"11px"}} key={index}>
+                                        <IconButton  onClick={()=>{setColor(colorItem.colorCode);
+                                                    handleColorUpdate(colorItem.colorCode)
+                                                    }}>
+                                <Brightness1Icon style={{ color: colorItem.colorCode }} /></IconButton></Grid>)})} </Grid>
+                                    </Popover>
+                                <IconButton>
                                     <DeleteIcon onClick={()=>{handleDelete(item)}}/></IconButton>
                                 </Card>
                             </Grid>
