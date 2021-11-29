@@ -3,9 +3,10 @@ import {
     Card,
     Typography,
     Button,
-    IconButton
+    IconButton,
+    CardMedia
 } from "@mui/material";
-import React from "react";
+import React,{Fragment} from "react";
 import '../css/notes.css'
 import {useSelector} from "react-redux";
 import Dialog from '@mui/material/Dialog';
@@ -21,28 +22,30 @@ import PaletteIcon from '@mui/icons-material/Palette';
 import Popover from '@mui/material/Popover';
 import Brightness1Icon from '@mui/icons-material/Brightness1';
 import colorPaletteClassName from "./ColorPalette";
-const Note = ({value}) => {
+import ImageIcon from '@mui/icons-material/Image';
+const Note = () => {
     const [open, setOpen] = React.useState(false);
     const [title, setTitle] = React.useState("")
     const [content, setContent] = React.useState("")
     const [noteId, setNoteId] = React.useState("")
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [color,setColor]=React.useState("White")
+    const [image,setImage]=React.useState("")
     const dispatch = useDispatch();
     const [openSnackbar,setOpenSnackbar] = React.useState(false)
     const data = {
         title: title,
         content: content,
         isTrash:false,
-        color:color
+        color:color,
+        profileImg:image
     };
     const handleClickOpen = (item) => {
         setTitle(item.title);
         setContent(item.content);
         setNoteId(item._id)
-        setOpen(true);
         setColor(item.color)
-
+        setImage(item.profileImg)
     };
     const handleClose = () => {
         setOpen(false);
@@ -53,25 +56,54 @@ const Note = ({value}) => {
         }).catch((err) => console.log(err.message));
         handleClose()
     }
-    
+    const handleColorUpdate=(color)=>{
+        const dataC = {
+            title: title,
+            content: content,
+            isTrash:false,
+            color:color,
+            profileImg:image
+        };
+        update(dataC,noteId).then((res) => {
+            dispatch(updateNote(res))
+        }).catch((err) => console.log(err.message));
+    }
     const handleDelete=(item)=>{
         const dataDelete = {
             title: item.title,
             content: item.content,
             isTrash:true,
-            color:item.color
+            color:item.color,
+            profileImg:image
         };
         update(dataDelete, item._id).then((res) => {
             dispatch(updateNote(res))
             setOpenSnackbar(true)
         }).catch((err) => console.log(err.message));
     }
+
+    const handleImage=(imagef,item)=>{
+        const formData = new FormData()
+        formData.append('title', item.title)
+        formData.append('content', item.content)
+        formData.append('color', item.color)
+        formData.append('profileImg', imagef)
+        update(formData, item._id).then((res) => {
+            dispatch(updateNote(res))
+        }).catch((err) => console.log(err.message));
+    }
+
     const handleToClose = (event, reason) => {
         if ("clickaway" === reason) return;
         setOpenSnackbar(false);
       };
-      const handleClick = (event) => {
+      const handleClick = (event,item) => {
+          console.log(item)
         setAnchorEl(event.currentTarget);
+        setTitle(item.title);
+        setContent(item.content);
+        setColor(item.color)
+        setNoteId(item._id)
       };
     
       const handlePClose = () => {
@@ -83,21 +115,34 @@ const Note = ({value}) => {
     const listView = useSelector((state) => state.allNotes.listView);
     return((notes.length > 0) ? (
         <div>
-            <Grid container
-                spacing={4} justifyContent={listView ? "center" : null}>
+            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+           
+                justifyContent={listView ? "center" : null}>
                 {
+                   
+                    // eslint-disable-next-line
                 notes.map((item) => {
                     if (item.isTrash === false) {
                         return (
-                            <Grid item
+                            <Grid item 
                             xs={12} md={listView ? 8 : 3}
                                 key={
                                     item._id
                             }>
                                 <Card className="notesCard"
                                style={{background:item.color}}    >
+                                   
+                                    {(item.profileImg !== undefined ) ? (
+                    <CardMedia
+                      component="img"
+                      image={`http://localhost:5000/images/${item.profileImg}`}
+                      alt="dish"style={{  maxwidth: 238,
+                        maxHeight: 238 }}
+                    />
+                  ) : null}
                                     <Typography variant="h5" onClick={
                                         () => {
+                                            setOpen(true);
                                             handleClickOpen(item)
                                         }
                                 }>
@@ -109,13 +154,36 @@ const Note = ({value}) => {
                                         }
                                         color="text.secondary" onClick={
                                             () => {
+                                                setOpen(true);
                                                 handleClickOpen(item)
                                             }
                                     }>
                                         {
                                         item.content
                                     } </Typography>
-                                     <IconButton onClick={handleClick}>
+ <Fragment>
+        <input
+          accept="image/*"
+          type="file"
+          onChange={(e)=>{
+              console.log(image)
+            handleImage(e.target.files[0],item)}}
+          id="icon-button-file"
+          style={{ display: 'none', }}
+        />
+        <label htmlFor="icon-button-file">
+          <Button
+           
+            component="span"
+            size="large"
+           
+          >
+            <ImageIcon color="action" />
+          </Button>
+        </label>
+      </Fragment>
+                                     <IconButton onClick={(e)=>{ 
+                                         handleClick(e,item)}}>
                 <PaletteIcon/></IconButton>
                 <Popover id={id}
         open={openA}
@@ -129,14 +197,12 @@ const Note = ({value}) => {
           return(
             <Grid item xs={12} sm={6} md={3} sx={{width:"11px"}} key={index}>
               <IconButton  onClick={()=>{setColor(colorItem.colorCode);
-                setTitle(item.title);
-                setContent(item.content);
-                setNoteId(item._id)
-                handleUpdate()
+                handleColorUpdate(colorItem.colorCode)
                }}>
           <Brightness1Icon style={{ color: colorItem.colorCode }} /></IconButton></Grid>)})} </Grid>
       </Popover>
-                                    <DeleteIcon onClick={()=>{handleDelete(item)}}/>
+      <IconButton>
+                                    <DeleteIcon onClick={()=>{handleDelete(item)}}/></IconButton>
                                 </Card>
                             </Grid>
                         );

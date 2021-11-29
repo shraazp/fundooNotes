@@ -41,7 +41,7 @@ export default function Login() {
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            userPost('users/login', data).then((res)=>{ console.log(res.status);(res.status===200)?setSuccess(true):setSuccess(false)}).catch((err)=>{alert(err)})
+            userPost('users/login', data).then((res)=>{(res.status===200)?(setSuccess(true)):setSuccess(false)}).catch((err)=>{alert(err)})
         }
     }
     const paperStyle = {
@@ -99,7 +99,7 @@ export default function Login() {
                             <Link href="/register">Create account</Link>
                         </div>
 
-                        <Button variant="contained"
+                        <Button id="login-Button"variant="contained"
                             style={btnstyle}
                             onClick={handleSubmit}>Login</Button>
                     </div>

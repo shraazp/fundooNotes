@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState,Fragment } from "react";
 import {create} from '../service/noteRetrieve'
 
 import { useDispatch } from "react-redux";
 import { addNewNote } from "../actions/notesActions";
-import { Paper, InputBase, Button, Grid ,IconButton} from "@mui/material";
+import { Paper, InputBase, Button, Grid ,IconButton,CardMedia} from "@mui/material";
 import PaletteIcon from '@mui/icons-material/Palette';
 import Popover from '@mui/material/Popover';
 import Brightness1Icon from '@mui/icons-material/Brightness1';
 import colorPaletteClassName from "./ColorPalette";
+import ImageIcon from '@mui/icons-material/Image';
 const CreateNote = () => {
     const [titleFieldVisible, setTitleFieldVisible] = useState(false)
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
+    const [file,setFile]=useState('')
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [color,setColor]=React.useState("White")
     const handleClick = (event) => {
@@ -31,14 +33,15 @@ const CreateNote = () => {
     }
     const dispatch = useDispatch();
 
-    const data = {
-        title: title,
-        content: content,
-        color:color
-    };
+   
     const handleSubmit = e => {
+      const formData = new FormData()
+      formData.append('title', title)
+      formData.append('content', content)
+      formData.append('color', color)
+        formData.append('profileImg', file)
         e.preventDefault()
-        create(data).then((res)=>{ if (res.data.status === 200) {
+        create(formData).then((res)=>{ if (res.data.status === 200) {
             dispatch(addNewNote(res.data.message))
           } else {
             console.log(res);
@@ -46,14 +49,25 @@ const CreateNote = () => {
         setTitle("");
         setContent("");
         setColor("White")
+        setFile("")
         hideTitleField();
     }
+    
     const handleColor=(colorItem)=>{
       setColor(colorItem)
     }
     return (
       <div className="create-notes">
         <Paper className="add-note-container" elevation={5} style={{background:color}}>
+       
+        {((file !== "" )&&{titleFieldVisible}) ? (
+                    <CardMedia
+                      component="img"
+                      image={URL.createObjectURL(file)}
+                      alt="dish"
+                     
+                    />
+                  ) : null}
           <InputBase
             type="text"
             placeholder={titleFieldVisible ? "Title" : "Take a note..."}
@@ -97,6 +111,30 @@ const CreateNote = () => {
               <IconButton  onClick={()=>{handleColor(colorItem.colorCode)}}>
           <Brightness1Icon style={{ color: colorItem.colorCode }} /></IconButton></Grid>)})} </Grid>
       </Popover>
+      <Fragment>
+        <input
+         
+          accept="image/*"
+          type="file"
+          onChange={(e)=>{setFile( e.target.files[0] )}}
+          id="icon-button-file"
+          style={{ display: 'none', }}
+        />
+        <label htmlFor="icon-button-file">
+          <Button
+           
+            component="span"
+            size="large"
+           
+          >
+            <ImageIcon color="action" />
+          </Button>
+        </label>
+      </Fragment>
+     
+      
+                            
+                      
                 <Button
                   style={{ color: "black", textTransform: "none" }}
                   onClick={handleSubmit}
@@ -107,6 +145,7 @@ const CreateNote = () => {
                   style={{ color: "black", textTransform: "none" }}
                   onClick={()=>{hideTitleField(); setTitle("");
                   setContent("");
+                  setFile("")
                   setColor("White")}}
                 >
                   Close

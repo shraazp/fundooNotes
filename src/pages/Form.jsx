@@ -61,7 +61,7 @@ export default function RegForm() {
         e.preventDefault()
         if (validate()) {
            userPost('users',data)
-           
+           window.location="/"
         }
     }
     const handleChange = (prop) => (event) => {
@@ -96,7 +96,7 @@ export default function RegForm() {
                             <div className="inputBox">
                                 <div className="firstAndLast">
                                     <div className="firstName">
-                                        <TextField required className="firstNameBox" label="First name" variant="outlined" size="small" name="firstname" 
+                                        <TextField required id="first_Name"className="firstNameBox" label="First name" variant="outlined" size="small" name="firstname" 
                                             onChange={handleInputChange}
                                             error={
                                                 !!errors.firstname
@@ -209,7 +209,7 @@ export default function RegForm() {
                                     <Link href="/">sign in instead</Link>
                                     </div>
                                     <div className="signUp">
-                                        <Button variant="contained" onClick={handleSubmit}>Sign Up</Button>
+                                        <Button id="button-submit" variant="contained" onClick={handleSubmit}>Sign Up</Button>
                                     </div>
                                 </div>
                             </div>

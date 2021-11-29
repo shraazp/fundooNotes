@@ -4,14 +4,12 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
-import Logo from '../assets/note.png'
+import Logo from '../assets/keep.png'
 import Typography from '@mui/material/Typography';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import Badge from '@mui/material/Badge';
-
 import SplitscreenOutlinedIcon from "@mui/icons-material/SplitscreenOutlined";
 import GridViewIcon from "@mui/icons-material/GridView";
-
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
@@ -26,6 +24,8 @@ InputAdornment,
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { selectedNote,listView } from "../actions/notesActions";
+import {removeUserSession} from "../utils/Common"
+import {Redirect } from 'react-router-dom'
 const drawerWidth = 240;
 
 
@@ -43,17 +43,16 @@ const AppBar = styled(MuiAppBar, {
 
 
 
-
 export default function Appbar(props) {
 
   const [search, setSearch] = useState("");
+  const  [signOut,setSignOut]=React.useState(false)
   const notes = useSelector((state) => state.allNotes.notes);
   const list = useSelector((state) => state.allNotes.listView);
   const dispatch = useDispatch();
   const handleSearch = (searchValue) => {
     setSearch(searchValue);
   };
-
   useEffect(() => {
     dispatch(
       selectedNote(
@@ -62,6 +61,7 @@ export default function Appbar(props) {
         })
       )
     )
+    // eslint-disable-next-line
    },[search,notes]);
    const handleView = () => {
     dispatch(listView());
@@ -108,8 +108,7 @@ export default function Appbar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={()=>{removeUserSession();setSignOut(true)}}>Sign Out</MenuItem>
     </Menu>
   );
 
@@ -142,7 +141,7 @@ export default function Appbar(props) {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>Sign out</p>
       </MenuItem>
     </Menu>
   );
@@ -157,13 +156,13 @@ export default function Appbar(props) {
             onClick={props.handleDrawerOpen}
             edge="start"
             sx={{
-              marginRight: '36px',
+              padding: '12px',
                color: "#4d4c4c" 
             }}
           >
             <MenuIcon />
           </IconButton>
-          <Avatar alt="FundooNotes" src={Logo} variant="square" />
+          <Avatar alt="FundooNotes" src={Logo} variant="square" style={{ margin:"0px,0px,4px",padding:"0px,6px,0px,0px"}} />
           <Typography
             variant="h6"
             noWrap
@@ -171,12 +170,12 @@ export default function Appbar(props) {
             sx={{ display: { xs: "none", sm: "block" } }}
           >
             &nbsp;
-            <span   style={{color:"black"}}>{props.title}</span>
+            <span   style={{color:"black",padding:"0px,30px,0px,0px"}}>{props.title}</span>
           </Typography>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <TextField
           placeholder="Search…"
-          style={{ width: "50%", margin: "auto" }}
+          style={{ width: "50%",padding:"0px,10px,0px,0px"}}
           variant="outlined"
           size="small"
           onChange={(e) => handleSearch(e.target.value)}
@@ -186,7 +185,7 @@ export default function Appbar(props) {
                 <SearchIcon />
               </InputAdornment>
             ),
-            style: { height: "44px" },
+            style: { height: "44px",padding:"0px,10px,0px,0px" },
           }}
         />
           <Box sx={{ flexGrow: 1 }} />
@@ -233,7 +232,7 @@ export default function Appbar(props) {
         </Toolbar>
       </AppBar>  {renderMobileMenu}
       {renderMenu}
-    
+      {signOut?<Redirect to="/"/>:null}
       
    </Box>
     

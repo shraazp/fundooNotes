@@ -10,6 +10,7 @@ const noteRetrieve = () => {
         throw err;
     });
 };
+
 const create = (data) => {
     let url = "http://localhost:5000/notes"
     return createNotes(url, data, `bearer ${token}`).then((response) => {
@@ -40,6 +41,7 @@ export {
     noteRetrieve,
     create,
     update,
-    Delete
+    Delete,
+   
    
 }

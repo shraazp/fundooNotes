@@ -3,7 +3,8 @@ import {
     Card,
     Typography,
     Button,
-    IconButton
+    IconButton,
+    CardMedia
 } from "@mui/material";
 import React from "react";
 import '../css/delete.css'
@@ -41,12 +42,13 @@ const DeleteNote = () => {
         })
     }
     const handleToClose = (event, reason) => {
-        if ("clickaway" == reason) return;
+        if ("clickaway" === reason) return;
         setOpen(false);
       };
     const notes = useSelector((state) => state.allNotes.searchNotes);
     const listView = useSelector((state) => state.allNotes.listView);
     const emptyTrash = () => {
+        // eslint-disable-next-line
         notes.map((item) => {
             if (item.isTrash === true) {
                 handleDelete(item)
@@ -67,7 +69,6 @@ const DeleteNote = () => {
     }
     return (
         <div className="trash">
-           
             <div className="trash-text-out">
                 <div className="trash-text">
                     <span>Notes in trash are deleted after 7 days</span>
@@ -80,18 +81,24 @@ const DeleteNote = () => {
                 </div>
             </div>
             <div className="trash-content">
-                <Grid container
-                    spacing={4} justifyContent={listView ? "center" : null}>
+                <Grid container spacing={4}
+                // eslint-disable-next-line
+                    justifyContent={listView ? "center" : null}>
+                        
                     {
+                        // eslint-disable-next-line
                     notes.map((item,index) => {
                         if (item.isTrash === true) {
                             return (
-                                <Grid item
-                                xs={12} md={listView ? 8 : 3}
+                                <Grid item 
+                                xs md={listView ? 8 : 3}
                                     key={
                                         item._id
                                 }>
-                                    <Card className="notesCard" style={{background:item.color}}
+                                    <Card   style={{
+                                            background:item.color,
+                                         }} 
+                                    elevation={hover[index] ? 6 : 1}
                                         onMouseEnter={
                                             () => {
                                                 setHover({[index]: true});
@@ -101,19 +108,24 @@ const DeleteNote = () => {
                                             () => {
                                                 setHover({[index]: false});
                                             }
-                                    }>
+                                    }>{item.profileImg !== undefined ? (
+                                        <CardMedia
+                                          component="img"
+                                          image={`http://localhost:5000/images/${item.profileImg}`}
+                                          alt="dish"
+                                          style={{ height: "150px" }}
+                                        />
+                                      ) : null}
                                         <Typography variant="h5">
                                             {
                                             item.title
                                         }</Typography>
-                                        <Typography sx={
-                                                {mb: 1.5}
-                                            }
+                                        <Typography  sx={{ mb: 1.5 }}
                                             color="text.secondary">
                                             {
                                             item.content
                                         } </Typography>
-                                       {hover[index] ? (<div className="delete-icons">
+                                       {hover[index] ? (<>
                                           <IconButton title="Delete forever" fontSize="small" onClick={
                                                 () => {
                                                    handleDelete(item)
@@ -129,7 +141,7 @@ const DeleteNote = () => {
                                                     
                                                 }
                                             }>
-                                        <RestoreFromTrashIcon  fontSize="small" /></IconButton></div>):null}
+                                        <RestoreFromTrashIcon  fontSize="small" /></IconButton></>): <div style={{ height: "36px" }}></div>}
                                         <Snackbar
                                             anchorOrigin={{
                                                 horizontal: "right",
