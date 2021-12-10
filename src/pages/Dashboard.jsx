@@ -8,27 +8,18 @@ import {useDispatch} from "react-redux";
 import {setNotes} from "../actions/notesActions";
 import CreateNote from "../components/createNote";
 import DeleteNote from "../components/DeleteNote";
-import { styled, useTheme } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import {Box} from "@mui/material";
+import {LazyLoadComponent} from 'react-lazy-load-image-component';
 const Dashboard = () => {
-    const dispatch = useDispatch();
-    let [path,setPath]=React.useState("")
-    useEffect(() => {
-        // eslint-disable-next-line
-        fetchitem();// eslint-disable-next-line
-    }, []);
-    const fetchitem = () => {
 
-        noteRetrieve().then((res) => {
-            
-            dispatch(setNotes(res.data));
-        }).catch((err) => {
-            console.log(err); <Redirect to="login"/>
-        });
-    };
+    const dispatch = useDispatch();
+    let [path, setPath] = React.useState("")
+
+     
     const [open, setOpen] = React.useState(false);
     const [title, setTitle] = React.useState("Fundoo notes");
-    
+
     const handleDrawer = () => {
         (open) ? setOpen(false) : setOpen(true)
     };
@@ -36,44 +27,55 @@ const Dashboard = () => {
         setTitle(title)
     }
     const drawerWidth = 240;
-    const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-        ({ theme, open }) => ({
-          flexGrow: 1,
-          padding: theme.spacing(3),
-          transition: theme.transitions.create('margin', {
+    const Main = styled('main', {
+        shouldForwardProp: (prop) => prop !== 'open'
+    })(({theme, open}) => ({
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
-          marginLeft: `-${drawerWidth}px`,
-          ...(open && {
-            transition: theme.transitions.create('margin', {
-              easing: theme.transitions.easing.easeOut,
-              duration: theme.transitions.duration.enteringScreen,
-            }),
-            marginLeft: 0,
-          }),
+            duration: theme.transitions.duration.leavingScreen
         }),
-      );
-   
-    return (<Main open={open}>
+        marginLeft: `-${drawerWidth}px`,
+        ...(open && {
+            transition: theme.transitions.create('margin', {
+                easing: theme.transitions.easing.easeOut,
+                duration: theme.transitions.duration.enteringScreen
+            }),
+            marginLeft: 0
+        })
+    }),);
 
- <Box  sx={{ p: 4, marginLeft: 28,}}>
-        <Appbar handleDrawerOpen={handleDrawer}
-            title={title}/>
-        <SideBar open={open}
-            setOpen={setOpen}
-            handleClick={handleClick}
-            path={path}
-            setPath={setPath}/>
-           
+    return (
+      
+        <Main open={open}>
 
-        {(path==="trash")?(<DeleteNote/>):( <div><CreateNote/>
-        <div className="note-cards">
-            <NoteCard />
-        </div></div>)}
-       
-        </Box>
+            <Box sx={
+                {
+                    p: 4,
+                    marginLeft: 28
+                }
+            }>
+                <Appbar handleDrawerOpen={handleDrawer}
+                    title={title}/>
+                <SideBar open={open}
+                    setOpen={setOpen}
+                    handleClick={handleClick}
+                    path={path}
+                    setPath={setPath}/> {
+                (path === "trash") ? (
+                    <DeleteNote/>) : (
+                    <div><CreateNote/>
+                        <div className="note-cards">
+                            <LazyLoadComponent>
+                                <NoteCard/>
+                            </LazyLoadComponent>
+                        </div>
+                    </div>
+                )
+            } </Box>
 
-    </Main>)
+        </Main>
+    )
 }
 export default Dashboard

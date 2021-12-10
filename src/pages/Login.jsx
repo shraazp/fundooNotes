@@ -6,31 +6,38 @@ import {useForm} from '../components/useForm';
 import {Link} from '@mui/material';
 import userPost from '../service/userRegister';
 import {Grid, Paper} from '@material-ui/core';
-import {Redirect } from 'react-router-dom'
 
 const initialFValues = {
     email: "",
     password: ""
 }
 export default function Login() {
- const  [success,setSuccess]=React.useState(false)
+   
     const validate = (fieldValues = values) => {
-        let temp = {
-            // eslint-disable-next-line
+        let temp = { // eslint-disable-next-line
             ...errors
         }
         if ('email' in fieldValues) 
             temp.email = (/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(fieldValues.email) ? "" : "Email is not valid."
+
+
+        
+
+
         if ('password' in fieldValues) {
             temp.password = (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/).test(fieldValues.password) ? "" : "Minimum 8 characterss required."
         }
-        setErrors({
-            // eslint-disable-next-line
-            ...temp
+        setErrors({ // eslint-disable-next-line
+            ... temp
         })
-        
+
         if (fieldValues === values) 
             return Object.values(temp).every(x => x === "")
+
+
+        
+
+
     }
 
     const {values, errors, setErrors, handleInputChange} = useForm(initialFValues, true, validate);
@@ -38,10 +45,15 @@ export default function Login() {
         email: values.email,
         password: values.password
     }
+
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            userPost('users/login', data).then((res)=>{(res.status===200)?(setSuccess(true)):setSuccess(false)}).catch((err)=>{alert(err)})
+            userPost('users/login',data).then((res) => {
+                window.location='/dashboard'
+            }).catch((err) => {
+                console.log(err)
+            })
         }
     }
     const paperStyle = {
@@ -53,11 +65,9 @@ export default function Login() {
     const btnstyle = {
         margin: '8px 0'
     }
-   
+
     return (
-       
         <Grid>
-           
             <Paper elevation={10}
                 style={paperStyle}>
                 <Grid align='center'>
@@ -93,19 +103,18 @@ export default function Login() {
                     <div className="forgotPassword">
                         <Link href="/forgot">Forgot password??</Link>
                     </div>
-                   
+
                     <div className="createAndLogin">
                         <div className="createUser">
                             <Link href="/register">Create account</Link>
                         </div>
 
-                        <Button id="login-Button"variant="contained"
+                        <Button id="login-Button" variant="contained"
                             style={btnstyle}
                             onClick={handleSubmit}>Login</Button>
                     </div>
                 </form>
-                {success?<Redirect to="/dashboard"/>:null}
-            </Paper>
+                </Paper>
         </Grid>
     );
 }

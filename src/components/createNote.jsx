@@ -57,7 +57,8 @@ const CreateNote = () => {
       setColor(colorItem)
     }
     return (
-      <div className="create-notes">
+      
+      <div className="create-notes" >
         <Paper className="add-note-container" elevation={5} style={{background:color}}>
        
         {((file !== "" )&&{titleFieldVisible}) ? (
@@ -139,9 +140,9 @@ const CreateNote = () => {
                   style={{ color: "black", textTransform: "none" }}
                   onClick={handleSubmit}
                 >
-                  Submit
+                  Close
                 </Button>
-                <Button
+                {/* <Button
                   style={{ color: "black", textTransform: "none" }}
                   onClick={()=>{hideTitleField(); setTitle("");
                   setContent("");
@@ -149,7 +150,7 @@ const CreateNote = () => {
                   setColor("White")}}
                 >
                   Close
-                </Button>
+                </Button> */}
               </Grid>
             </Grid>
           )}

@@ -28,11 +28,13 @@ const Note = () => {
     const [title, setTitle] = React.useState("")
     const [content, setContent] = React.useState("")
     const [noteId, setNoteId] = React.useState("")
-    const [anchorEl, setAnchorEl] = React.useState(null);
     const [color,setColor]=React.useState("White")
     const [image,setImage]=React.useState("")
-    const dispatch = useDispatch();
+    const [anchorEl, setAnchorEl] = React.useState(null);
     const [openSnackbar,setOpenSnackbar] = React.useState(false)
+    const [hover, setHover] = React.useState([]);
+    const dispatch = useDispatch();
+    
     const data = {
         title: title,
         content: content,
@@ -40,6 +42,7 @@ const Note = () => {
         color:color,
         profileImg:image
     };
+   
     const handleClickOpen = (item) => {
         setTitle(item.title);
         setContent(item.content);
@@ -97,12 +100,7 @@ const Note = () => {
         if ("clickaway" === reason) return;
         setOpenSnackbar(false);
       };
-      const handleClick = (event,item) => {
-        setTitle(item.title);
-        setContent(item.content);
-        setColor(item.color)
-        setNoteId(item._id)
-      };
+    
      
     
       const handlePClose = () => {
@@ -120,7 +118,7 @@ const Note = () => {
                 {
                    
                     // eslint-disable-next-line
-                notes.map((item) => {
+                notes.map((item,index) => {
                     if (item.isTrash === false) {
                         return (
                             <Grid item 
@@ -129,17 +127,30 @@ const Note = () => {
                                     item._id
                             }>
                                 <Card className="notesCard"
-                               style={{background:item.color}}    >
+                               style={{background:item.color}}    
+                               elevation={hover[index] ? 6 : 1}
+                                onMouseEnter={
+                                () => {
+                                    setHover({[index]: true});
+                                }
+                            }
+                            onMouseLeave={
+                                () => {
+                                    setHover({[index]: false});
+                                }
+                        }>
                                    
                                     {(item.profileImg !== undefined ) ? (
                     <CardMedia
                       component="img"
                       image={`http://localhost:5000/images/${item.profileImg}`}
                       alt="dish"style={{  maxwidth: 238,
-                        maxHeight: 238 }}
+                        maxHeight: 238}}
                     />
                   ) : null}
-                                    <Typography variant="h5" onClick={
+                                    <Typography sx={
+                                            {mb: 1.5}
+                                        } onClick={
                                         () => {
                                             setOpen(true);
                                             handleClickOpen(item)
@@ -160,6 +171,7 @@ const Note = () => {
                                         {
                                         item.content
                                     } </Typography>
+                                      {hover[index] ? (<>
                            <Fragment>
                                               <input
                                               accept="image/*"
@@ -175,7 +187,7 @@ const Note = () => {
                             <IconButton
                             component="span"
                             size="large"
-                            onClick={(e)=>{handleClick(e,item);}}
+                            onClick={(e)=>{handleClickOpen(item);}}
                             >
                                
                             <ImageIcon color="action" />   </IconButton>
@@ -186,7 +198,7 @@ const Note = () => {
 
                             <IconButton onClick={(e)=>{
                                 setAnchorEl(e.currentTarget);
-                                         handleClick(e,item)}}>
+                                         handleClickOpen(item)}}>
                                 <PaletteIcon/></IconButton>
                                 <Popover id={id}
                                     open={openA}
@@ -205,7 +217,7 @@ const Note = () => {
                                 <Brightness1Icon style={{ color: colorItem.colorCode }} /></IconButton></Grid>)})} </Grid>
                                     </Popover>
                                 <IconButton>
-                                    <DeleteIcon onClick={()=>{handleDelete(item)}}/></IconButton>
+                                    <DeleteIcon onClick={()=>{handleDelete(item)}}/></IconButton></>): <div style={{ height: "38px" }}></div>}
                                 </Card>
                             </Grid>
                         );
@@ -255,7 +267,9 @@ const Note = () => {
         }
       />
         </div>
+        
     ) : (
+    
         <span>No matching results.</span>
     ));
 };

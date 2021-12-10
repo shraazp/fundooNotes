@@ -6,8 +6,10 @@ const intialState = {
 };
 
 export const notesReducer = (state = intialState, {type, payload}) => {
+   
     switch (type) {
         case ActionTypes.SET_NOTES:
+           
             return {
                 ...state,
                 notes: payload

@@ -1,5 +1,5 @@
 export const ActionTypes = {
-    SET_NOTES: "SET_NOTESS",
+    SET_NOTES: "SET_NOTES",
     SELECTED_NOTE: "SELECTED_NOTES",
     ADD_NEW_NOTE:"ADD_NEW_NOTE",
     UPDATE_NOTE:"UPDATE_NOTE",

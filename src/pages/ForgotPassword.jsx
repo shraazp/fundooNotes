@@ -33,7 +33,11 @@ export default function ForgotPassword() {
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            userPost('users/forgot', data)
+            userPost('users/forgot', data).then((res) => {
+                console.log(res)
+            }).catch((err) => {
+                console.log(err)
+            })
         }
     }
     const paperStyle = {

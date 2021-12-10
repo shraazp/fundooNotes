@@ -7,7 +7,9 @@ import Avatar from '@mui/material/Avatar';
 import Logo from '../assets/keep.png'
 import Typography from '@mui/material/Typography';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import Badge from '@mui/material/Badge';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import LogoutIcon from '@mui/icons-material/Logout';
 import SplitscreenOutlinedIcon from "@mui/icons-material/SplitscreenOutlined";
 import GridViewIcon from "@mui/icons-material/GridView";
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
@@ -47,16 +49,18 @@ export default function Appbar(props) {
 
   const [search, setSearch] = useState("");
   const  [signOut,setSignOut]=React.useState(false)
+ 
+ 
+  const dispatch = useDispatch();
   const notes = useSelector((state) => state.allNotes.notes);
   const list = useSelector((state) => state.allNotes.listView);
-  const dispatch = useDispatch();
   const handleSearch = (searchValue) => {
     setSearch(searchValue);
   };
-  useEffect(() => {
+ useEffect(() => {
     dispatch(
       selectedNote(
-        notes.filter((item) => {
+      notes.filter((item) => {
           return (item.title.toLowerCase().includes(search.toLowerCase())||(item.content.toLowerCase().includes(search.toLowerCase())));
         })
       )
@@ -67,23 +71,19 @@ export default function Appbar(props) {
     dispatch(listView());
   };
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  
 
 
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
+ 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
+   
   };
   
   function refreshPage() {
@@ -108,43 +108,14 @@ export default function Appbar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={()=>{removeUserSession();setSignOut(true)}}>Sign Out</MenuItem>
+      <MenuItem onClick={()=>{removeUserSession();setSignOut(true)}}>
+        <ListItemIcon><LogoutIcon/></ListItemIcon>
+      <ListItemText>Sign Out</ListItemText>
+      </MenuItem>
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Sign out</p>
-      </MenuItem>
-    </Menu>
-  );
+ 
  
   return (
     <Box sx={{ display: 'flex' }}>
@@ -191,30 +162,30 @@ export default function Appbar(props) {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton size="large" color="inherit">
-              <Badge>
+             
                 <RefreshIcon onClick={refreshPage}sx={{ color: "#4d4c4c" }} />
-              </Badge>
+             
             </IconButton>
             {!list ? (
-               <IconButton size="large" color="inherit"><Badge>
+               <IconButton size="large" color="inherit">
           <SplitscreenOutlinedIcon
             fontSize="medium"
             onClick={handleView}
             style={{ marginLeft: "15px", color: "#4d4c4c"}}
-          /> </Badge>
+          /> 
           </IconButton>
-        ) : ( <IconButton size="large" color="inherit"><Badge>
+        ) : ( <IconButton size="large" color="inherit">
           <GridViewIcon
             fontSize="medium"
             onClick={handleView}
             style={{ marginLeft: "15px",color: "#4d4c4c" }}
-          /> </Badge>
+          /> 
           </IconButton>
         )}
             <IconButton size="large" color="inherit">
-              <Badge>
+            
                 <SettingsSharpIcon sx={{ color: "#4d4c4c" }} />
-              </Badge>
+              
             </IconButton>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <IconButton
@@ -230,7 +201,7 @@ export default function Appbar(props) {
             </IconButton>
           </Box>
         </Toolbar>
-      </AppBar>  {renderMobileMenu}
+      </AppBar> 
       {renderMenu}
       {signOut?<Redirect to="/"/>:null}
       
